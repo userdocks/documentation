@@ -1,0 +1,76 @@
+---
+sidebar_position: 3
+---
+
+# User Management
+
+> **codedocks** implements an user management dashbaord and an API to manage users of an application. You can create user roles with different access to **userdocks**, invite users and imidieatly assign a user role for them. You can freeze, unfreeze, and delete user accounts. Additionally you can revoke tokens from the dashbaord.
+
+## Dashboard
+
+You can manage users directly from the userdocks dashboard.
+
+### Create User roles
+
+Click on `html°+ USER ROLE`.
+
+![userdocks create user role](/img/create_user_role_userdocks.png)
+
+Fill out the form and click `html°Create User Role`.
+
+![userdocks fill out user role form](/img/fill_out_user_role_form_userdocks.png)
+
+In the section **Access Control** you can toggle (on/off) which actions a user with this **User Role** can take in this application:
+
+- Add User Roles to User
+- Remove User Roles to User
+- Invite User
+- Freeze User
+- Unfreeze User
+- Delete User
+
+### Add/Remove User Roles to Users
+
+Click on the `html°User` tab and click on a row to select edit an user.
+
+![userdocks app user list](/img/app_user_list_userdocks.png)
+
+In the section **Access Control** you can toggle (on/off) which user roles an user has.
+
+![userdocks app user access control](/img/app_user_access_control_userdocks.png)
+
+### Freeze/Unfreeze Users
+
+Click on the `html°User` tab and click on a user.
+
+![userdocks app user list](/img/app_user_list_userdocks.png)
+
+In the section **Freeze** you can toggle (on/off) wether an user is freezed or not.
+
+![userdocks app user access control](/img/app_user_access_control_userdocks.png)
+
+### Revoke Refresh Token
+
+Click on the `html°User` tab and click on a user.
+
+![userdocks app user list](/img/app_user_list_userdocks.png)
+
+A click on the red button **Revoke Refresh Token** can revoke the refresh token of this user. When you click this button a modal will appear where you have to explicitly confirm that you want to revoke the refresh token by typing **REVOKE** (all characters UPPERCASE).
+
+### Delete User
+
+Click on the `html°User` Tab
+
+![userdocks app user list](/img/app_user_list_userdocks.png)
+
+Each User Row has a delete button with a recycle bin on it. A click on the button can delete the user. When you click this button a modal will appear where you have to explicitly confirm that you want to sign out all users by typing **SIGN OUT** (all characters UPPERCASE).
+
+### Sign Out All User
+
+![userdocks app user list](/img/app_user_list_userdocks.png)
+
+Click on the `html°SIGN OUT ALL USER` button. When you click this button a modal will appear where you have to explicitly confirm that you want to delete this user by typing **DELETE** (all characters UPPERCASE).
+
+## API
+
+You can manage users directly via the userdocks [API](/api-reference-user-management).

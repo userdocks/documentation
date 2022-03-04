@@ -1,0 +1,1914 @@
+---
+title: User Management
+slug: /api-reference-user-management
+---
+
+# API Reference - User Management
+
+> Access and id token are providing access to your userdocks application. NEVER store them in cookies or in the local storage. Always use the userdocks SDK to access your tokens.
+
+> Api keys are like super user passwords to your userdocks application. NEVER expose them publicly, NEVER send them to the client, and NEVER make requests from the browser with an api key. Always keep them on your server and only store them in memory in an environment variable.
+
+If an app user has an user role with the appropriate access, it can access the userdocks user management REST API. You can also manage the userdocks users via your own server with read only and write only api keys.
+
+There are 6 different Access Controll Functions which can be toggled (on/off) on creation of an [user role](/user-management#create-user-roles).
+
+You can toggle a user role (on/off) in the [dashboard for each user](/user-management#addremove-user-roles-to-users) or by using this API.
+
+## GET /user-roles
+
+This route will return all user roles available in an userdocks app.
+
+### Syntax
+
+#### HTTP Method:
+
+- `html°GET`
+
+#### Base URL:
+
+- `html°https://api.userdocks.com`
+
+#### End Point:
+
+- `html°/api/v1/user-roles`
+
+#### HTTP Headers:
+
+| Property      | Type        | Required  | Access                 | Description                        |
+| ------------- | ----------- | --------- | ---------------------- | ---------------------------------- |
+| Authorization | `js°String` | `js°true` | **Only access to App** | Access Token for the userdocks app |
+
+or
+
+| Property       | Type        | Required  | Access                 | Description                   |
+| -------------- | ----------- | --------- | ---------------------- | ----------------------------- |
+| X-API-KEY      | `js°String` | `js°true` | **Only access to App** | Api key for the userdocks app |
+| X-API-KEY-TYPE | `js°String` | `js°true` | **Only access to App** | `read` or `write`             |
+| X-CLIENT-ID    | `js°String` | `js°true` | **Only access to App** | `UUID` of the userdocks app   |
+
+#### Response:
+
+- `html°Object`
+
+```js
+try {
+  // call userdocks user management API
+  const response = await fetch('https://api.userdocks.com/api/v1/user-roles', {
+    method: 'GET',
+    headers: {
+      Authorization: `${token_type} ${access_token}`, // you need to apply an access token in the authorization header or the api key (see headers)
+      'Content-Type': 'application/json',
+    },
+  });
+  const data = await response.json();
+
+  // do something with the data
+} catch (err) {
+  console.error(err);
+  // handle error
+}
+```
+
+#### Successful Response:
+
+Can have the following HTTP Status Codes:
+
+- `html°200` - OK
+
+```json
+// GET /user-roles
+{
+  "success": true,
+  "message": "<human-readable-message>",
+  "error": null,
+  "data": [
+    {
+      "id": "<UUID-of-the-user-role>",
+      "name": "<name-of-the-user-role>"
+    }
+  ]
+}
+```
+
+#### Error Response:
+
+Can have the following HTTP Status Codes:
+
+- `html°400` - Bad Request
+- `html°401` - Unauthorized
+- `html°403` - Forbidden
+- `html°500` - Internal Server Error
+
+```json
+// GET /user-roles
+{
+  "success": false,
+  "message": null,
+  "error": "<human-readable-error-message>",
+  "data": [] // empty arrray
+}
+```
+
+## POST /invite-user
+
+This route will invite an User to the userdocks app (receives a confirmation mail).
+
+### Syntax
+
+#### HTTP Method:
+
+- `html°POST`
+
+#### Base URL:
+
+- `html°https://api.userdocks.com`
+
+#### End Point:
+
+- `html°/api/v1/invite-user`
+
+#### HTTP Headers:
+
+| Property      | Type        | Required  | Access          | Description                                                       |
+| ------------- | ----------- | --------- | --------------- | ----------------------------------------------------------------- |
+| Authorization | `js°String` | `js°true` | **Invite User** | Access Token for the userdocks app with access to **Invite User** |
+
+or
+
+| Property       | Type        | Required  | Access                 | Description                   |
+| -------------- | ----------- | --------- | ---------------------- | ----------------------------- |
+| X-API-KEY      | `js°String` | `js°true` | **Only access to App** | Api key for the userdocks app |
+| X-API-KEY-TYPE | `js°String` | `js°true` | **Only access to App** | `read` or `write`             |
+| X-CLIENT-ID    | `js°String` | `js°true` | **Only access to App** | `UUID` of the userdocks app   |
+
+#### POST Data:
+
+| Property  | Type               | Required   |
+| --------- | ------------------ | ---------- |
+| email     | `js°String`        | `js°true`  |
+| userRoles | `js°Array<String>` | `js°false` |
+
+#### Response:
+
+- `html°Object`
+
+```js
+try {
+  const body = {
+    email: 'jane.doe@email.com', // required
+    userRoles: ['<name-of-user-role>'], // NOT required
+  };
+
+  // call userdocks user management API
+  const response = await fetch('https://api.userdocks.com/api/v1/invite-user', {
+    method: 'POST',
+    headers: {
+      Authorization: `${token_type} ${access_token}`, // you need to apply an access token in the authorization header from an user which has a user role with access control to invite user or the api key (see headers)
+      'Content-Type': 'application/json',
+    },
+    body: JSON.parse(body),
+  });
+  const data = await response.json();
+
+  // do something with the data
+} catch (err) {
+  console.error(err);
+  // handle error
+}
+```
+
+#### Successful Response:
+
+- `html°201` - Created
+
+```json
+// POST /invite-user
+{
+  "success": true,
+  "message": "<human-readable-message>",
+  "error": null,
+  "data": null
+}
+```
+
+### Error Response:
+
+Can have the following HTTP Status Codes:
+
+- `html°400` - Bad Request
+- `html°401` - Unauthorized
+- `html°403` - Forbidden
+- `html°500` - Internal Server Error
+
+```json
+// POST /invite-user
+{
+  "success": false,
+  "error": "<human-readable-error-message>",
+  "message": null,
+  "data": null
+}
+```
+
+## POST /delete-user
+
+This route will delete an User from the userdocks app
+
+### Syntax
+
+#### Base URL:
+
+- `html°https://api.userdocks.com`
+
+#### End Point:
+
+- `html°/api/v1/delete-user`
+
+#### HTTP Headers:
+
+| Property      | Type        | Required  | Access          | Description                                                       |
+| ------------- | ----------- | --------- | --------------- | ----------------------------------------------------------------- |
+| Authorization | `js°String` | `js°true` | **Delete User** | Access Token for the userdocks app with access to **Delete User** |
+
+or
+
+| Property       | Type        | Required  | Access                 | Description                   |
+| -------------- | ----------- | --------- | ---------------------- | ----------------------------- |
+| X-API-KEY      | `js°String` | `js°true` | **Only access to App** | Api key for the userdocks app |
+| X-API-KEY-TYPE | `js°String` | `js°true` | **Only access to App** | `read` or `write`             |
+| X-CLIENT-ID    | `js°String` | `js°true` | **Only access to App** | `UUID` of the userdocks app   |
+
+#### POST Data:
+
+| Property | Type        | Required  |
+| -------- | ----------- | --------- |
+| email    | `js°String` | `js°true` |
+
+#### Response:
+
+- `html°Object`
+
+```js
+try {
+  const body = {
+    email: 'jane.doe@email.com', // required
+  };
+
+  // call userdocks user management API
+  const response = await fetch('https://api.userdocks.com/api/v1/delete-user', {
+    method: 'POST',
+    headers: {
+      Authorization: `${token_type} ${access_token}`, // you need to apply an access token in the authorization header from an user which has a user role with access control to delete user or the api key (see headers)
+      'Content-Type': 'application/json',
+    },
+    body: JSON.parse(body),
+  });
+  const data = await response.json();
+
+  // do something with the data
+} catch (err) {
+  console.error(err);
+  // handle error
+}
+```
+
+#### Successful Response:
+
+Can have the following HTTP Status Codes:
+
+- `html°200` - OK
+
+```json
+// POST /delete-user
+{
+  "success": true,
+  "message": "<human-readable-message>",
+  "error": null,
+  "data": null
+}
+```
+
+### Error Response:
+
+Can have the following HTTP Status Codes:
+
+- `html°400` - Bad Request
+- `html°401` - Unauthorized
+- `html°403` - Forbidden
+- `html°500` - Internal Server Error
+
+```json
+// POST /delete-user
+{
+  "success": false,
+  "error": "<human-readable-error-message>",
+  "message": null,
+  "data": null
+}
+```
+
+## POST /add-user-role-to-user
+
+This route will add an existing user role of an userdocks app to the user of an userdocks app.
+
+### Syntax
+
+#### Base URL:
+
+- `html°https://api.userdocks.com`
+
+#### End Point:
+
+- `html°/api/v1/add-user-role-to-user`
+
+#### HTTP Headers:
+
+| Property      | Type        | Required  | Access                     | Description                                                                  |
+| ------------- | ----------- | --------- | -------------------------- | ---------------------------------------------------------------------------- |
+| Authorization | `js°String` | `js°true` | **Add User Roles To User** | Access Token for the userdocks app with access to **Add User Roles To User** |
+
+or
+
+| Property       | Type        | Required  | Access                 | Description                   |
+| -------------- | ----------- | --------- | ---------------------- | ----------------------------- |
+| X-API-KEY      | `js°String` | `js°true` | **Only access to App** | Api key for the userdocks app |
+| X-API-KEY-TYPE | `js°String` | `js°true` | **Only access to App** | `read` or `write`             |
+| X-CLIENT-ID    | `js°String` | `js°true` | **Only access to App** | `UUID` of the userdocks app   |
+
+#### POST Data:
+
+| Property   | Type        | Required  |
+| ---------- | ----------- | --------- |
+| email      | `js°String` | `js°true` |
+| userRoleId | `js°String` | `js°true` |
+
+#### Response:
+
+- `html°Object`
+
+```js
+try {
+  const body = {
+    email: 'jane.doe@email.com', // required
+    userRoleId: '<UUID-of-the-user-role>', // required
+  };
+
+  // call userdocks user management API
+  const response = await fetch(
+    'https://api.userdocks.com/api/v1/add-user-role-to-user',
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `${token_type} ${access_token}`, // you need to apply an access token in the authorization header from an user which has a user role with access control to add user roles to user or the api key (see headers)
+        'Content-Type': 'application/json',
+      },
+      body: JSON.parse(body),
+    },
+  );
+  const data = await response.json();
+
+  // do something with the data
+} catch (err) {
+  console.error(err);
+  // handle error
+}
+```
+
+#### Successful Response:
+
+Can have the following HTTP Status Codes:
+
+- `html°200` - OK
+
+```json
+// POST /add-user-role-to-user
+{
+  "success": true,
+  "message": "<human-readable-message>",
+  "error": null,
+  "data": null
+}
+```
+
+### Error Response:
+
+Can have the following HTTP Status Codes:
+
+- `html°400` - Bad Request
+- `html°401` - Unauthorized
+- `html°403` - Forbidden
+- `html°500` - Internal Server Error
+
+```json
+// POST /add-user-role-to-user
+{
+  "success": false,
+  "error": "<human-readable-error-message>",
+  "message": null,
+  "data": null
+}
+```
+
+## POST /remove-user-role-from-user
+
+This route will remove an existing user role of an userdocks app from the user of an userdocks app.
+
+### Syntax
+
+#### Base URL:
+
+- `html°https://api.userdocks.com`
+
+#### End Point:
+
+- `html°/api/v1/remove-user-role-from-user`
+
+#### HTTP Headers:
+
+| Property      | Type        | Required  | Access                          | Description                                                                       |
+| ------------- | ----------- | --------- | ------------------------------- | --------------------------------------------------------------------------------- |
+| Authorization | `js°String` | `js°true` | **Remove User Roles From User** | Access Token for the userdocks app with access to **Remove User Roles From User** |
+
+or
+
+| Property       | Type        | Required  | Access                 | Description                   |
+| -------------- | ----------- | --------- | ---------------------- | ----------------------------- |
+| X-API-KEY      | `js°String` | `js°true` | **Only access to App** | Api key for the userdocks app |
+| X-API-KEY-TYPE | `js°String` | `js°true` | **Only access to App** | `read` or `write`             |
+| X-CLIENT-ID    | `js°String` | `js°true` | **Only access to App** | `UUID` of the userdocks app   |
+
+#### POST Data:
+
+| Property   | Type        | Required  |
+| ---------- | ----------- | --------- |
+| email      | `js°String` | `js°true` |
+| userRoleId | `js°String` | `js°true` |
+
+#### Response:
+
+- `html°Object`
+
+```js
+try {
+  const body = {
+    email: 'jane.doe@email.com', // required
+    userRoleId: '<UUID-of-the-user-role>', // required
+  };
+
+  // call userdocks user management API
+  const response = await fetch(
+    'https://api.userdocks.com/api/v1/remove-user-role-from-user',
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `${token_type} ${access_token}`, // you need to apply an access token in the authorization header from an user which has a user role with access control to remove user roles from user or the api key (see headers)
+        'Content-Type': 'application/json',
+      },
+      body: JSON.parse(body),
+    },
+  );
+  const data = await response.json();
+
+  // do something with the data
+} catch (err) {
+  console.error(err);
+  // handle error
+}
+```
+
+#### Successful Response:
+
+Can have the following HTTP Status Codes:
+
+- `html°200` - OK
+
+```json
+// POST /remove-user-role-from-user
+{
+  "success": true,
+  "message": "<human-readable-message>",
+  "error": null,
+  "data": null
+}
+```
+
+### Error Response:
+
+Can have the following HTTP Status Codes:
+
+- `html°400` - Bad Request
+- `html°401` - Unauthorized
+- `html°403` - Forbidden
+- `html°500` - Internal Server Error
+
+```json
+// POST /remove-user-role-from-user
+{
+  "success": false,
+  "error": "<human-readable-error-message>",
+  "message": null,
+  "data": null
+}
+```
+
+## POST /freeze-user
+
+This route will freeze an existing user of an userdocks app so that the user is unable to login.
+
+### Syntax
+
+#### Base URL:
+
+- `html°https://api.userdocks.com`
+
+#### End Point:
+
+- `html°/api/v1/freeze-user`
+
+#### HTTP Headers:
+
+| Property      | Type        | Required  | Access          | Description                                                       |
+| ------------- | ----------- | --------- | --------------- | ----------------------------------------------------------------- |
+| Authorization | `js°String` | `js°true` | **Freeze User** | Access Token for the userdocks app with access to **Freeze User** |
+
+or
+
+| Property       | Type        | Required  | Access                 | Description                   |
+| -------------- | ----------- | --------- | ---------------------- | ----------------------------- |
+| X-API-KEY      | `js°String` | `js°true` | **Only access to App** | Api key for the userdocks app |
+| X-API-KEY-TYPE | `js°String` | `js°true` | **Only access to App** | `read` or `write`             |
+| X-CLIENT-ID    | `js°String` | `js°true` | **Only access to App** | `UUID` of the userdocks app   |
+
+#### POST Data:
+
+| Property | Type        | Required  |
+| -------- | ----------- | --------- |
+| email    | `js°String` | `js°true` |
+
+#### Response:
+
+- `html°Object`
+
+#### Example:
+
+```js
+try {
+  const body = {
+    email: 'jane.doe@email.com', // required
+  };
+
+  // call userdocks user management API
+  const response = await fetch('https://api.userdocks.com/api/v1/freeze-user', {
+    method: 'POST',
+    headers: {
+      Authorization: `${token_type} ${access_token}`, // you need to apply an access token in the authorization header from an user which has a user role with access control to freeze user or the api key (see headers)
+      'Content-Type': 'application/json',
+    },
+    body: JSON.parse(body),
+  });
+  const data = await response.json();
+
+  // do something with the data
+} catch (err) {
+  console.error(err);
+  // handle error
+}
+```
+
+#### Successful Response:
+
+Can have the following HTTP Status Codes:
+
+- `html°200` - OK
+
+```json
+// POST /freeze-user
+{
+  "success": true,
+  "message": "<human-readable-message>",
+  "error": null,
+  "data": null
+}
+```
+
+#### Error Response:
+
+Can have the following HTTP Status Codes:
+
+- `html°400` - Bad Request
+- `html°401` - Unauthorized
+- `html°403` - Forbidden
+- `html°500` - Internal Server Error
+
+```json
+// POST /freeze-user
+{
+  "success": false,
+  "error": "<human-readable-error-message>",
+  "message": null,
+  "data": null
+}
+```
+
+## POST /unfreeze-user
+
+This route will freeze an existing user of an userdocks app so that the user is unable to login.
+
+### Syntax
+
+#### Base URL:
+
+- `html°https://api.userdocks.com`
+
+#### End Point:
+
+- `html°/api/v1/unfreeze-user`
+
+#### HTTP Headers:
+
+| Property      | Type        | Required  | Access            | Description                                                         |
+| ------------- | ----------- | --------- | ----------------- | ------------------------------------------------------------------- |
+| Authorization | `js°String` | `js°true` | **Unfreeze User** | Access Token for the userdocks app with access to **Unfreeze User** |
+
+or
+
+| Property       | Type        | Required  | Access                 | Description                   |
+| -------------- | ----------- | --------- | ---------------------- | ----------------------------- |
+| X-API-KEY      | `js°String` | `js°true` | **Only access to App** | Api key for the userdocks app |
+| X-API-KEY-TYPE | `js°String` | `js°true` | **Only access to App** | `read` or `write`             |
+| X-CLIENT-ID    | `js°String` | `js°true` | **Only access to App** | `UUID` of the userdocks app   |
+
+#### POST Data:
+
+| Property | Type        | Required  |
+| -------- | ----------- | --------- |
+| email    | `js°String` | `js°true` |
+
+#### Response:
+
+- `html°Object`
+
+#### Example:
+
+```js
+try {
+  const body = {
+    email: 'jane.doe@email.com', // required
+  };
+
+  // call userdocks user management API
+  const response = await fetch('https://api.userdocks.com/api/v1/freeze-user', {
+    method: 'POST',
+    headers: {
+      Authorization: `${token_type} ${access_token}`, // you need to apply an access token in the authorization header from an user which has a user role with access control to unfreeze user or the api key (see headers)
+      'Content-Type': 'application/json',
+    },
+    body: JSON.parse(body),
+  });
+  const data = await response.json();
+
+  // do something with the data
+} catch (err) {
+  console.error(err);
+  // handle error
+}
+```
+
+#### Successful Response:
+
+Can have the following HTTP Status Codes:
+
+- `html°200` - OK
+
+```json
+// POST /unfreeze-user
+{
+  "success": true,
+  "message": "<human-readable-message>",
+  "error": null,
+  "data": null
+}
+```
+
+#### Error Response:
+
+Can have the following HTTP Status Codes:
+
+- `html°400` - Bad Request
+- `html°401` - Unauthorized
+- `html°403` - Forbidden
+- `html°500` - Internal Server Error
+
+```json
+// POST /unfreeze-user
+{
+  "success": false,
+  "error": "<human-readable-error-message>",
+  "message": null,
+  "data": null
+}
+```
+
+## GET /secret
+
+> USE THIS ON YOUR SERVER!!! NEVER EXECUTE THIS CODE ON THE CLIENT SIDE!!!
+
+This route will return your jwt secret and is only available with a `read only api key`. Keep your secrets only on your server and make sure no user of your application has ever access to this secret.
+
+### Syntax
+
+#### Base URL:
+
+- `html°https://api.userdocks.com`
+
+#### End Point:
+
+- `html°/api/v1/secret`
+
+#### HTTP Headers:
+
+| Property       | Type        | Required  | Access                 | Description                             |
+| -------------- | ----------- | --------- | ---------------------- | --------------------------------------- |
+| X-API-KEY      | `js°String` | `js°true` | **Only access to App** | Read only api key for the userdocks app |
+| X-API-KEY-TYPE | `js°String` | `js°true` | **Only access to App** | `read`                                  |
+| X-CLIENT-ID    | `js°String` | `js°true` | **Only access to App** | `UUID` of the userdocks app             |
+
+#### Response:
+
+- `html°Object`
+
+#### Example:
+
+```js
+try {
+  // call userdocks user management API
+  // this code should never been executed on the client
+  // ONLY use this on YOUR SERVER!!!
+  const response = await fetch('https://api.userdocks.com/api/v1/secret', {
+    method: 'GET',
+    headers: {
+      'X-API-KEY': read_only_api_key, // you need to apply an read only api key
+      'X-API-KEY-TYPE': 'read',
+      'X-CLIENT-ID': yourAppId,
+      'Content-Type': 'application/json',
+    },
+  });
+  const data = await response.json();
+
+  // do something with the data
+} catch (err) {
+  console.error(err);
+  // handle error
+}
+```
+
+#### Successful Response:
+
+Can have the following HTTP Status Codes:
+
+- `html°200` - OK
+
+```json
+// GET /secret
+{
+  "success": true,
+  "message": "<human-readable-message>",
+  "error": null,
+  "data": {
+    "secret": "<the-secret-for-your-id-token>"
+  }
+}
+```
+
+#### Error Response:
+
+Can have the following HTTP Status Codes:
+
+- `html°400` - Bad Request
+- `html°401` - Unauthorized
+- `html°403` - Forbidden
+- `html°500` - Internal Server Error
+
+```json
+// GET /secret
+{
+  "success": false,
+  "error": "<human-readable-error-message>",
+  "message": null,
+  "data": null
+}
+```
+
+## POST /stripe-checkout-session
+
+> **_NOTE_**: `!!!YOU AND YOUR COMPANY ARE RESPONSIBLE FOR INVOICES FOR YOUR USERS AND ALL THE TAX OBLIGATIONS THAT RESULT IN ANY COUNTRY FOR YOU AND YOUR COMPANY!!! !!!USERDOCKS IS NOT RESPONSIBLE FOR CORRECT INVOICES!!!`
+
+This route will return a stripe session. You can use this session to make payments, e.g. monthly subscriptions via userdocks and stripe.
+
+A typical way to set up a `subscription`, or a `one time payment` for a tenant is:
+
+- use `POST /stripe-checkout-session` with mode `setup` to setup a payment method for your tenant
+  - your customer will be redirected to a stripe hosted website where the customer sets up its credit card
+  - check your tenant if the `stripeCustomerId` and the `stripeDefaultPaymentMethodId` exists, if not start again.
+- use `POST /stripe-invoice` to invoice your customer, set the mode to `payment` for a one time payment invoice, or to `subscription` to setup recurring invoices.
+  - make sure to use a `taxRate`, `price`, `allowedCountires`, `quantity`, and `test` (for using stripe test data)
+
+### Syntax
+
+#### Base URL:
+
+- `html°https://api.userdocks.com`
+
+#### End Point:
+
+- `html°/api/v1/stripe-checkout-session`
+
+#### HTTP Headers:
+
+| Property      | Type        | Required  | Access                 | Description |
+| ------------- | ----------- | --------- | ---------------------- | ----------- |
+| Authorization | `js°String` | `js°true` | **Only access to App** |             |
+
+#### Response:
+
+- `html°Object`
+
+#### Example:
+
+> Note this example uses the stripe api as well. If you want to use this endpoint you have to connect your stripe account with userdocks.
+
+```js
+import { loadStripe } from '@stripe/stripe-js'; // or load it via a script tag
+
+try {
+  const body = {
+    price: 'price_12jhHjkHK<your-stripe-price-id>', // only used with 'subscription', 'payment'
+    mode: 'setup', // 'subscription', 'payment'
+    taxRate: 'txr_34232IOUQdas<your-stripe-tax-rate-id>', // only used with 'subscription', 'payment'
+    allowedCountries: ['AT'], // two character country code
+    quantity: 1, // only used with 'subscription', 'payment'
+    test: true, // if true userdocks uses your stripe test data (set to fals in production, set to true in local dev, dev, and staging environments)
+  };
+
+  const stripePromise = loadStripe(
+    'pk_test_57656567HGHGHG868JGJH<your-stripe-publishable-key>',
+  );
+
+  // call userdocks user management API
+  const response = await fetch(
+    'https://api.userdocks.com/api/v1/stripe-checkout-session', // only the user can open a checkout session. it is not possible with an API key
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `${token_type} ${access_token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.parse(body),
+    },
+  );
+  const { data } = await response.json();
+
+  // When the customer clicks on the button, redirect them to Checkout.
+  const stripe = await stripePromise;
+  const { error } = await stripe.redirectToCheckout({
+    sessionId: data.session.id,
+  });
+  console.error(error);
+  // If `redirectToCheckout` fails due to a browser or network
+  // error, display the localized error message to your customer
+  // using `error.message`.
+} catch (err) {
+  console.error(err);
+  // handle error
+}
+```
+
+#### Successful Response:
+
+Can have the following HTTP Status Codes:
+
+- `html°201` - OK
+
+```json
+// POST /stripe-checkout-session
+{
+  "success": true,
+  "message": "<human-readable-message>",
+  "error": null,
+  "data": {
+    "session": {
+      "id": "<your-checkout-session-id-connected-to-your-userdocks-user>",
+      "object": "checkout.session",
+      "allow_promotion_codes": null,
+      "amount_subtotal": null,
+      "amount_total": null,
+      "billing_address_collection": null,
+      "cancel_url": "https://<your-cancel-url-you-configured-in-userdocks>.com/error",
+      "client_reference_id": null,
+      "currency": null,
+      "customer": null,
+      "customer_email": null,
+      "livemode": false,
+      "locale": null,
+      "metadata": {},
+      "mode": null,
+      "payment_intent": "<your-payment-indent-id>",
+      "payment_method_types": ["card"],
+      "payment_status": "unpaid",
+      "setup_intent": null,
+      "shipping": null,
+      "shipping_address_collection": null,
+      "submit_type": null,
+      "subscription": null,
+      "success_url": "https://<your-success-url-you-configured-in-userdocks>.com/success",
+      "total_details": null
+    }
+  }
+}
+```
+
+#### Error Response:
+
+Can have the following HTTP Status Codes:
+
+- `html°400` - Bad Request
+- `html°401` - Unauthorized
+- `html°403` - Forbidden
+- `html°500` - Internal Server Error
+
+```json
+// POST /stripe-checkout-session
+{
+  "success": false,
+  "error": "<human-readable-error-message>",
+  "message": null,
+  "data": null
+}
+```
+
+## POST /stripe-billing-portal
+
+> **_NOTE_**: `!!!YOU AND YOUR COMPANY ARE RESPONSIBLE FOR INVOICES FOR YOUR USERS AND ALL THE TAX OBLIGATIONS THAT RESULT IN ANY COUNTRY FOR YOU AND YOUR COMPANY!!! !!!USERDOCKS IS NOT RESPONSIBLE FOR CORRECT INVOICES!!!`
+
+This route will return a stripe billing portal. You can use this billing to make payments, create new payment methods e.g. monthly subscriptions via userdocks and stripe.
+
+This will redirect your customer to the billing portal of stripe. Make sure you have the billing portal enabled for yur stripe app.
+
+### Syntax
+
+#### Base URL:
+
+- `html°https://api.userdocks.com`
+
+#### End Point:
+
+- `html°/api/v1/stripe-billing-portal`
+
+#### HTTP Headers:
+
+| Property      | Type        | Required  | Access                 | Description |
+| ------------- | ----------- | --------- | ---------------------- | ----------- |
+| Authorization | `js°String` | `js°true` | **Only access to App** |             |
+
+#### Response:
+
+- `html°Object`
+
+#### Example:
+
+```js
+try {
+  // call userdocks user management API
+  const response = await fetch(
+    'https://api.userdocks.com/api/v1/stripe-billing-portal',
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `${token_type} ${access_token}`, // only the user can open the billing portal. it is not possible with an API key
+        'Content-Type': 'application/json',
+      },
+    },
+  );
+  const { data } = await response.json();
+
+  return (window.location.href = data.session.url);
+} catch (err) {
+  console.error(err);
+  // handle error
+}
+```
+
+#### Successful Response:
+
+Can have the following HTTP Status Codes:
+
+- `html°201` - OK
+
+```json
+// POST /stripe-billing-portal
+{
+  "success": true,
+  "message": "<human-readable-message>",
+  "error": null,
+  "data": {
+    "session": {
+      "id": "<id-of-the-cilling-portal-session>",
+      "object": "billing_portal.session",
+      "created": 0,
+      "customer": "<stripe-customer-id>",
+      "livemode": true,
+      "return_url": "https://<your-return-url-you-configured-in-userdocks>.com/return_url",
+      "url": "https://billing.stripe.com/session/<your-session-url-for-the-current-user>"
+    }
+  }
+}
+```
+
+#### Error Response:
+
+Can have the following HTTP Status Codes:
+
+- `html°400` - Bad Request
+- `html°401` - Unauthorized
+- `html°403` - Forbidden
+- `html°500` - Internal Server Error
+
+```json
+// POST /stripe-billing-portal
+{
+  "success": false,
+  "error": "<human-readable-error-message>",
+  "message": null,
+  "data": null
+}
+```
+
+## POST /stripe-add-card
+
+> **_NOTE_**: `!!!YOU AND YOUR COMPANY ARE RESPONSIBLE FOR INVOICES FOR YOUR USERS AND ALL THE TAX OBLIGATIONS THAT RESULT IN ANY COUNTRY FOR YOU AND YOUR COMPANY!!! !!!USERDOCKS IS NOT RESPONSIBLE FOR CORRECT INVOICES!!!`
+
+This route will return a stripe setup intent. You can use this setup intent to add cards to a user.
+
+A typical way to set up a `subscription`, or a `one time payment` for a tenant is:
+
+- use the `stripe-js` to create a payment method and then use this endpoint to add this payment method to a user
+
+### Syntax
+
+#### Base URL:
+
+- `html°https://api.userdocks.com`
+
+#### End Point:
+
+- `html°/api/v1/stripe-add-card`
+
+#### HTTP Headers:
+
+| Property      | Type        | Required  | Access                 | Description |
+| ------------- | ----------- | --------- | ---------------------- | ----------- |
+| Authorization | `js°String` | `js°true` | **Only access to App** |             |
+
+#### Response:
+
+- `html°Object`
+
+#### Example:
+
+> Note this example uses the stripe api as well. If you want to use this endpoint you have to connect your stripe account with userdocks.
+
+```js
+try {
+  const body = {
+    paymentMethodId: '<pm_786543265823659875>', // the stripe payment method id
+    city: '<city>',
+    postal_code: '<postal_code>',
+    line1: '<line1>',
+    line2: '<line2>',
+    country: '<country>', // two letter country code
+    state: '<state>',
+    test: true, // if true userdocks uses your stripe test data (set to fals in production, set to true in local dev, dev, and staging environments)
+  };
+
+  // call userdocks user management API
+  const response = await fetch(
+    'https://api.userdocks.com/api/v1/stripe-add-card', // only the user can open a checkout session. it is not possible with an API key
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `${token_type} ${access_token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.parse(body),
+    },
+  );
+  const { data } = await response.json();
+
+  // use data to finilaze the setup e.g. "next_action" for Strong Customer Authentication
+} catch (err) {
+  console.error(err);
+  // handle error
+}
+```
+
+#### Successful Response:
+
+Can have the following HTTP Status Codes:
+
+- `html°201` - OK
+
+```json
+// POST /stripe-add-card
+{
+  "success": true,
+  "message": "<human-readable-message>",
+  "error": null,
+  "data": {
+    "session": {
+      "id": "seti_1GjEs3AA7oWz99nSwgIWvE3U",
+      "object": "setup_intent",
+      "application": null,
+      "cancellation_reason": null,
+      "client_secret": "seti_1GjEs3AA7oWz99nSwgIWvE3U_secret_HHoV694vXSgatHnVqqRhT5uVIxCaqxs",
+      "created": 1589592683,
+      "customer": null,
+      "description": null,
+      "last_setup_error": null,
+      "latest_attempt": null,
+      "livemode": false,
+      "mandate": null,
+      "metadata": {},
+      "next_action": null,
+      "on_behalf_of": null,
+      "payment_method": null,
+      "payment_method_options": {},
+      "payment_method_types": ["card"],
+      "single_use_mandate": null,
+      "status": "requires_payment_method",
+      "usage": "off_session"
+    }
+  }
+}
+```
+
+#### Error Response:
+
+Can have the following HTTP Status Codes:
+
+- `html°400` - Bad Request
+- `html°401` - Unauthorized
+- `html°403` - Forbidden
+- `html°500` - Internal Server Error
+
+```json
+// POST /stripe-checkout-session
+{
+  "success": false,
+  "error": "<human-readable-error-message>",
+  "message": null,
+  "data": null
+}
+```
+
+## POST /stripe-invoice
+
+> **_NOTE_**: `!!!YOU AND YOUR COMPANY ARE RESPONSIBLE FOR INVOICES FOR YOUR USERS AND ALL THE TAX OBLIGATIONS THAT RESULT IN ANY COUNTRY FOR YOU AND YOUR COMPANY!!! !!!USERDOCKS IS NOT RESPONSIBLE FOR CORRECT INVOICES!!!`
+
+This route will create an invoice within stripe that automatically charges the tenant with its default payment method.
+
+A typical way to set up a `subscription`, or a `one time payment` for a tenant is:
+
+- use `POST /stripe-checkout-session` with mode `setup` to setup a payment method for your tenant
+  - your customer will be redirected to a stripe hosted website where the customer sets up its credit card
+  - check your tenant if the `stripeCustomerId` and the `stripeDefaultPaymentMethodId` exists, if not start again.
+- use `POST /stripe-invoice` to invoice your customer, set the mode to `payment` for a one time payment invoice, or to `subscription` to setup recurring invoices.
+  - make sure to use a `taxRate`, `price`, `allowedCountires`, `quantity`, and `test` (for using stripe test data)
+
+### Syntax
+
+#### Base URL:
+
+- `html°https://api.userdocks.com`
+
+#### End Point:
+
+- `html°/api/v1/stripe-invoice`
+
+#### HTTP Headers:
+
+| Property      | Type        | Required  | Access                 | Description |
+| ------------- | ----------- | --------- | ---------------------- | ----------- |
+| Authorization | `js°String` | `js°true` | **Only access to App** |             |
+
+#### Response:
+
+- `html°Object`
+
+#### Example:
+
+```js
+try {
+  // call userdocks user management API
+  const response = await fetch(
+    'https://api.userdocks.com/api/v1/stripe-invoice',
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `${token_type} ${access_token}`, // only the user can create and pay an invoice. it is not possible with an API key
+        'Content-Type': 'application/json',
+      },
+    },
+  );
+  const { data } = await response.json();
+
+  return (window.location.href = data.session.url);
+} catch (err) {
+  console.error(err);
+  // handle error
+}
+```
+
+#### Successful Response:
+
+Can have the following HTTP Status Codes:
+
+- `html°201` - OK
+
+```json
+// POST /stripe-billing-portal
+{
+  "success": true,
+  "message": "<human-readable-message>",
+  "error": null,
+  "data": null
+}
+```
+
+#### Error Response:
+
+Can have the following HTTP Status Codes:
+
+- `html°400` - Bad Request
+- `html°401` - Unauthorized
+- `html°403` - Forbidden
+- `html°500` - Internal Server Error
+
+```json
+// POST /stripe-billing-portal
+{
+  "success": false,
+  "error": "<human-readable-error-message>",
+  "message": null,
+  "data": null
+}
+```
+
+## GET /tenant
+
+This route will return the tenant connected to the current user. The tenant holds all the payment information.
+
+### Syntax
+
+#### Base URL:
+
+- `html°https://api.userdocks.com`
+
+#### End Point:
+
+- `html°/api/v1/tenant`
+
+#### HTTP Headers:
+
+| Property      | Type        | Required  | Access                 | Description |
+| ------------- | ----------- | --------- | ---------------------- | ----------- |
+| Authorization | `js°String` | `js°true` | **Only access to App** |             |
+
+or
+
+| Property       | Type        | Required  | Access                 | Description                   |
+| -------------- | ----------- | --------- | ---------------------- | ----------------------------- |
+| X-API-KEY      | `js°String` | `js°true` | **Only access to App** | Api key for the userdocks app |
+| X-API-KEY-TYPE | `js°String` | `js°true` | **Only access to App** | `read` or `write`             |
+| X-CLIENT-ID    | `js°String` | `js°true` | **Only access to App** | `UUID` of the userdocks app   |
+
+#### Response:
+
+- `html°Object`
+
+#### Example:
+
+```js
+try {
+  // call userdocks user management API
+  const response = await fetch('https://api.userdocks.com/api/v1/tenant', {
+    method: 'GET',
+    headers: {
+      Authorization: `${token_type} ${access_token}`, // you need to apply an access token in the authorization header the api key (see headers)
+      'Content-Type': 'application/json',
+    },
+  });
+  const { data } = await response.json();
+
+  // do something with the data
+} catch (err) {
+  console.error(err);
+  // handle error
+}
+```
+
+Example with API token
+
+```js
+try {
+  // call userdocks user management API
+  const response = await fetch(
+    'https://api.userdocks.com/api/v1/tenant/<tenant-id>', // you can add "?test=true" or "?test=false", if true userdocks uses your stripe test data (set to false in production, set to true in local dev, dev, and staging environments)
+    {
+      method: 'GET',
+      headers: {
+        'X-API-KEY': `${readOnlyAPIKey}`,
+        'X-API-KEY-TYPE': 'read',
+        'X-CLIENT-ID': `${clientId}`,
+        'Content-Type': 'application/json',
+      },
+    },
+  );
+  const { data } = await response.json();
+
+  // do something with the data
+} catch (err) {
+  console.error(err);
+  // handle error
+}
+```
+
+#### Successful Response:
+
+Can have the following HTTP Status Codes:
+
+- `html°200` - OK
+
+```json
+// GET /tenant
+{
+  "success": true,
+  "message": "<human-readable-message>",
+  "error": null,
+  "data": {
+    "tenant": {
+      "id": "<UUID-of-the-tenant>",
+      "name": "<name-of-the-tenant>",
+      "description": "<description-of-the-tenant>",
+      "companyName": "<company-name>",
+      "companyVatId": "<company-vat-id>",
+      "companyTaxExempt": "<company-tax-exempt>",
+      "companyTaxType": "<company-tax-type>",
+      "isBusinessCustomer": false,
+      "stripeCustomerId": "<stripe-customer-id-of-the-tenant>",
+      "stripePriceId": "<stripe-price-id-of-the-tenant>",
+      "stripePaymentMethod": "<stripe-payment-method-of-the-tenant>",
+      "mode": "<stripe-payment-mode-of-the-tenant>",
+      "freezed": false,
+      "freezedDueFailedPayment": false,
+      "paymentFailed": false,
+      "paymentFailedCount": 0,
+      "paymentFailedDate": null, // timestamp
+      "paidUntil": null, // timestamp
+      "freeUntil": null, // timestamp
+      "paidUnits": null, // float
+      "freeUnits": null, // float
+      "shippingAddress": {
+        "name": "<name>",
+        "city": "<city>",
+        "country": "<country>",
+        "line1": "<line1>",
+        "line2": "<line2>",
+        "postal_code": "<postal_code>",
+        "state": "<state>"
+      },
+      "billingAddress": {
+        "name": "<name>",
+        "city": "<city>",
+        "country": "<country>",
+        "line1": "<line1>",
+        "line2": "<line2>",
+        "postal_code": "<postal_code>",
+        "state": "<state>"
+      },
+      "users": [
+        {
+          "id": "<UUID_of-the-user>",
+          "language": "<browser-language-or-selected-language-of-the-user>",
+          "salutation": null,
+          "salutationOther": null,
+          "name": null,
+          "given_name": null,
+          "family_name": null,
+          "middle_name": null,
+          "nickname": null,
+          "preferred_username": null,
+          "profile": null,
+          "picture": null,
+          "website": null,
+          "email": "<email-of-the-user>",
+          "email_verified": true,
+          "gender": null,
+          "birthdate": null,
+          "zoneinfo": null,
+          "locale": null,
+          "phone_number": null,
+          "phone_number_verified": null,
+          "created_at": "<created-at>",
+          "updated_at": "<updated-at>",
+          "freezed": null,
+          "deleted": false,
+          "verified_by_admin": true,
+          "tenantId": "<tenant-id>",
+          "appId": "<app-id>"
+        }
+      ]
+    }
+  }
+}
+```
+
+#### Error Response:
+
+Can have the following HTTP Status Codes:
+
+- `html°400` - Bad Request
+- `html°401` - Unauthorized
+- `html°403` - Forbidden
+- `html°500` - Internal Server Error
+
+```json
+// GET /tenant
+{
+  "success": false,
+  "error": "<human-readable-error-message>",
+  "message": null,
+  "data": null
+}
+```
+
+## POST /tenant
+
+This route will update the current tenant.
+
+### Syntax
+
+#### Base URL:
+
+- `html°https://api.userdocks.com`
+
+#### End Point:
+
+- `html°/api/v1/tenant`
+
+#### HTTP Headers:
+
+| Property      | Type        | Required  | Access                 | Description |
+| ------------- | ----------- | --------- | ---------------------- | ----------- |
+| Authorization | `js°String` | `js°true` | **Only access to App** |             |
+
+or
+
+| Property       | Type        | Required  | Access                 | Description                   |
+| -------------- | ----------- | --------- | ---------------------- | ----------------------------- |
+| X-API-KEY      | `js°String` | `js°true` | **Only access to App** | Api key for the userdocks app |
+| X-API-KEY-TYPE | `js°String` | `js°true` | **Only access to App** | `write`                       |
+| X-CLIENT-ID    | `js°String` | `js°true` | **Only access to App** | `UUID` of the userdocks app   |
+
+#### Response:
+
+- `html°Object`
+
+#### Example:
+
+```js
+try {
+  const body = {
+    test: true, // if true userdocks uses your stripe test data (set to false in production, set to true in local dev, dev, and staging environments)
+    tenant: {
+      description: '',
+      companyName: '', // will change the name on billing address
+      companyVatId: '', // ATU1234567 or DE12432423, anly valid with a companyTaxType
+      companyTaxExempt: '', // either 'none' (default), 'reverse' or 'exempt'
+      // see https://stripe.com/docs/billing/customer/tax-ids
+      companyTaxType: '', // either ae_trn, au_abn, br_cnpj, br_cpf, ca_bn, ca_qst, ch_vat, cl_tin, es_cif, eu_vat, hk_br, id_npwp, in_gst, jp_cn, jp_rn, kr_brn, li_uid, mx_rfc, my_frp, my_itn, my_sst, no_vat, nz_gst, ru_inn, ru_kpp, sa_vat, sg_gst, sg_uen, th_vat, tw_vat, us_ein, or za_vat
+      stripeProductId: '', // you can only modify this with an api key
+      stripePaymentMethod: '', // you can only modify this with an api key
+      stripeSubscriptionId: '', // you can only modify this with an api key
+      stripePriceId: '', // you can only modify this with an api key
+      stripeProductId: '', // you can only modify this with an api key
+      stripePaymentMethod: '', // you can only modify this with an api key
+      stripeSubscriptionId: '', // you can only modify this with an api key
+      mode: '', // you can only modify this with an api key
+      paidUntil: new Date(), // you can only modify this with an api key
+      freeUntil: new Date(), // you can only modify this with an api key
+      paidUnits: 999, // you can only modify this with an api key
+      freeUnits: 999, // you can only modify this with an api key
+      shippingAddress: {
+        name: '',
+        city: '',
+        country: '',
+        line1: '',
+        line2: '',
+        postal_code: '',
+        state: '',
+      },
+      billingAddress: {
+        name: '',
+        city: '',
+        country: '',
+        line1: '',
+        line2: '',
+        postal_code: '',
+        state: '',
+      },
+      subscription: {
+        // this taxRate will update all subscriptionItems on all subscriptions that the user currently has
+        taxRates: ['<your-stripe-tax-rate>'], // !!!THIS WILL NOT CHANGE THE TAX RATE ON PAST INVOICES!!!
+      },
+    },
+  };
+
+  // call userdocks user management API
+  // if you use the api key you can add an id to this url like POST /api/v1/tenant/<UUID>
+  const response = await fetch('https://api.userdocks.com/api/v1/tenant', {
+    method: 'GET',
+    headers: {
+      Authorization: `${token_type} ${access_token}`, // you need to apply an access token in the authorization header from an user which has a user role with access control to unfreeze user or the api key (see headers)
+      'Content-Type': 'application/json',
+    },
+    body: JSON.parse(body),
+  });
+  const { data } = await response.json();
+
+  // do something with the data
+} catch (err) {
+  console.error(err);
+  // handle error
+}
+```
+
+#### Successful Response:
+
+Can have the following HTTP Status Codes:
+
+- `html°200` - OK
+
+```json
+// POST /tenant
+{
+  "success": true,
+  "message": "<human-readable-message>",
+  "error": null,
+  "data": null
+}
+```
+
+#### Error Response:
+
+Can have the following HTTP Status Codes:
+
+- `html°400` - Bad Request
+- `html°401` - Unauthorized
+- `html°403` - Forbidden
+- `html°500` - Internal Server Error
+
+```json
+// GET /user
+{
+  "success": false,
+  "error": "<human-readable-error-message>",
+  "message": null,
+  "data": null
+}
+```
+
+## GET /user
+
+This route will return the current user.
+
+### Syntax
+
+#### Base URL:
+
+- `html°https://api.userdocks.com`
+
+#### End Point:
+
+- `html°/api/v1/user`
+
+#### HTTP Headers:
+
+| Property      | Type        | Required  | Access                 | Description |
+| ------------- | ----------- | --------- | ---------------------- | ----------- |
+| Authorization | `js°String` | `js°true` | **Only access to App** |             |
+
+or
+
+| Property       | Type        | Required  | Access                 | Description                   |
+| -------------- | ----------- | --------- | ---------------------- | ----------------------------- |
+| X-API-KEY      | `js°String` | `js°true` | **Only access to App** | Api key for the userdocks app |
+| X-API-KEY-TYPE | `js°String` | `js°true` | **Only access to App** | `read` or `write`             |
+| X-CLIENT-ID    | `js°String` | `js°true` | **Only access to App** | `UUID` of the userdocks app   |
+
+#### Response:
+
+- `html°Object`
+
+#### Example:
+
+```js
+try {
+  // call userdocks user management API
+  const response = await fetch('https://api.userdocks.com/api/v1/user', {
+    method: 'POST',
+    headers: {
+      Authorization: `${token_type} ${access_token}`, // you need to apply an access token in the authorization header from an user which has a user role with access control to unfreeze user or the api key (see headers)
+      'Content-Type': 'application/json',
+    },
+  });
+  const { data } = await response.json();
+
+  // do something with the data
+} catch (err) {
+  console.error(err);
+  // handle error
+}
+```
+
+#### Successful Response:
+
+Can have the following HTTP Status Codes:
+
+- `html°200` - OK
+
+```json
+// GET /user
+{
+  "success": true,
+  "message": "<human-readable-message>",
+  "error": null,
+  "data": {
+    "user": {
+      "id": "<UUID_of-the-user>",
+      "language": "<browser-language-or-selected-language-of-the-user>",
+      "salutation": null,
+      "salutationOther": null,
+      "name": null,
+      "given_name": null,
+      "family_name": null,
+      "middle_name": null,
+      "nickname": null,
+      "preferred_username": null,
+      "profile": null,
+      "picture": null,
+      "website": null,
+      "email": "<email-of-the-user>",
+      "email_verified": true,
+      "gender": null,
+      "birthdate": null,
+      "zoneinfo": null,
+      "locale": null,
+      "phone_number": null,
+      "phone_number_verified": null,
+      "created_at": "<created-at>",
+      "updated_at": "<updated-at>",
+      "freezed": null,
+      "deleted": false,
+      "verified_by_admin": true,
+      "tenantId": "<tenant-id>",
+      "appId": "<app-id>"
+    }
+  }
+}
+```
+
+#### Error Response:
+
+Can have the following HTTP Status Codes:
+
+- `html°400` - Bad Request
+- `html°401` - Unauthorized
+- `html°403` - Forbidden
+- `html°500` - Internal Server Error
+
+```json
+// GET /user
+{
+  "success": false,
+  "error": "<human-readable-error-message>",
+  "message": null,
+  "data": null
+}
+```
+
+## POST /user
+
+This route will update the current user.
+
+### Syntax
+
+#### Base URL:
+
+- `html°https://api.userdocks.com`
+
+#### End Point:
+
+- `html°/api/v1/user`
+
+#### HTTP Headers:
+
+| Property      | Type        | Required  | Access                 | Description |
+| ------------- | ----------- | --------- | ---------------------- | ----------- |
+| Authorization | `js°String` | `js°true` | **Only access to App** |             |
+
+or
+
+| Property       | Type        | Required  | Access                 | Description                   |
+| -------------- | ----------- | --------- | ---------------------- | ----------------------------- |
+| X-API-KEY      | `js°String` | `js°true` | **Only access to App** | Api key for the userdocks app |
+| X-API-KEY-TYPE | `js°String` | `js°true` | **Only access to App** | `write`                       |
+| X-CLIENT-ID    | `js°String` | `js°true` | **Only access to App** | `UUID` of the userdocks app   |
+
+#### Response:
+
+- `html°Object`
+
+#### Example:
+
+```js
+try {
+  const body = {
+    language: 'en',
+    salutation: 'Miss',
+    salutationOther: '',
+    name: 'Jane Doe',
+    given_name: 'Jane',
+    family_name: 'Doe',
+    middle_name: '',
+    nickname: 'JD',
+    preferred_username: 'JD',
+    profile: '',
+    picture: '',
+    website: '',
+    gender: 'm', // 'f', 'o' (other, add your preferred salutation)
+    birthdate: '22-02-1992',
+    zoneinfo: '',
+    locale: '',
+    phone_number: '',
+    phone_number_verified: false,
+  };
+
+  // call userdocks user management API
+  // if you use the api key you can add an id to this url like POST /api/v1/user/<UUID>
+  const response = await fetch('https://api.userdocks.com/api/v1/user', {
+    method: 'GET',
+    headers: {
+      Authorization: `${token_type} ${access_token}`, // you need to apply an access token in the authorization header from an user which has a user role with access control to unfreeze user or the api key (see headers)
+      'Content-Type': 'application/json',
+    },
+    body: JSON.parse(body),
+  });
+  const { data } = await response.json();
+
+  // do something with the data
+} catch (err) {
+  console.error(err);
+  // handle error
+}
+```
+
+#### Successful Response:
+
+Can have the following HTTP Status Codes:
+
+- `html°200` - OK
+
+```json
+// POST /user
+{
+  "success": true,
+  "message": "<human-readable-message>",
+  "error": null,
+  "data": null
+}
+```
+
+#### Error Response:
+
+Can have the following HTTP Status Codes:
+
+- `html°400` - Bad Request
+- `html°401` - Unauthorized
+- `html°403` - Forbidden
+- `html°500` - Internal Server Error
+
+```json
+// GET /user
+{
+  "success": false,
+  "error": "<human-readable-error-message>",
+  "message": null,
+  "data": null
+}
+```
+
+## POST /use-promo-code-for-user
+
+This route will return the success if a promotion code was successfully used.
+
+### Syntax
+
+#### Base URL:
+
+- `html°https://api.userdocks.com`
+
+#### End Point:
+
+- `html°/api/v1/use-promo-code-for-user`
+
+#### HTTP Headers:
+
+| Property      | Type        | Required  | Access                 | Description |
+| ------------- | ----------- | --------- | ---------------------- | ----------- |
+| Authorization | `js°String` | `js°true` | **Only access to App** |             |
+
+or
+
+| Property       | Type        | Required  | Access                 | Description                   |
+| -------------- | ----------- | --------- | ---------------------- | ----------------------------- |
+| X-API-KEY      | `js°String` | `js°true` | **Only access to App** | Api key for the userdocks app |
+| X-API-KEY-TYPE | `js°String` | `js°true` | **Only access to App** | `read` or `write`             |
+| X-CLIENT-ID    | `js°String` | `js°true` | **Only access to App** | `UUID` of the userdocks app   |
+
+#### Response:
+
+- `html°Object`
+
+#### Example:
+
+```js
+try {
+  const code = 'YOUR_PROMO_CODE';
+  // call userdocks user management API
+  const response = await fetch(
+    'https://api.userdocks.com/api/v1/use-promo-code-for-user',
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `${token_type} ${access_token}`, // you need to apply an access token in the authorization header from an user or the api key (see headers)
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        code,
+      }),
+    },
+  );
+  const { data } = await response.json();
+
+  // do something with the data
+} catch (err) {
+  console.error(err);
+  // handle error
+}
+```
+
+#### Successful Response:
+
+Can have the following HTTP Status Codes:
+
+- `html°200` - OK
+
+```json
+// POST /use-promo-code-for-user
+{
+  "success": true,
+  "message": "<human-readable-message>",
+  "error": null,
+  "data": null
+}
+```
+
+#### Error Response:
+
+Can have the following HTTP Status Codes:
+
+- `html°400` - Bad Request
+- `html°401` - Unauthorized
+- `html°403` - Forbidden
+- `html°500` - Internal Server Error
+
+```json
+// POST /use-promo-code-for-user
+{
+  "success": false,
+  "error": "<human-readable-error-message>",
+  "message": null,
+  "data": null
+}
+```
