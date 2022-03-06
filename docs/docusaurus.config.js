@@ -20,11 +20,11 @@ const config = {
           label: 'Documentation',
           position: 'left',
         },
-        {
-          href: 'https://blog.userdocks.com',
-          label: 'Blog',
-          position: 'left',
-        },
+        // {
+        //   href: 'https://blog.userdocks.com',
+        //   label: 'Blog',
+        //   position: 'left',
+        // },
         // @ts-ignore
         ...baseDocusaurus.themeConfig.navbar.items,
       ],
