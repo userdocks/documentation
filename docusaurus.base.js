@@ -30,7 +30,7 @@ const config = {
       },
       footer: {
         style: 'dark',
-        copyright: `Copyright © ${new Date().getFullYear()} userdocks`,
+        copyright: `Copyright © 2020-${new Date().getFullYear()} by userdocks. All rights reserved.`,
       },
       prism: {
         theme: lightCodeTheme,
