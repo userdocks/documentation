@@ -1,12 +1,14 @@
 ---
-id: post-checkout-sessions
-title: POST /checkout-sessions
-description: POST /checkout-sessions
-slug: /api/rest/checkout-sessions/post-checkout-sessions
+id: post-tenant-checkout-sessions
+title: POST /tenants/:tenantId/checkout-sessions
+description: POST /tenants/:tenantId/checkout-sessions
+slug: /api/rest/checkout-sessions/post-tenant-checkout-sessions
 tags: [api, rest, user management, tenant, stripe, checkout sessions, invoices, subscriptions, one-time payments]
 ---
 
-> **_NOTE: You and your company are soley responsible for invoices for your users (customers), as well as all tax obligations that result in any country for you and your company. Use the stripe test API to check your invoices before going into production. E.g., if all necessary data is displayed, as well as if the correct tax is applied, and so on._**
+### Request
+
+> **_Note: You and your company are soley responsible for invoices for the users (customers), as well as all tax obligations that result in any country for you and your company. Use the stripe test API to check your invoices before going into production. E.g., if all necessary data is displayed, as well as if the correct tax is applied, and so on._**
 
 This route will create a checkout-session for a tenant of an application.
 
@@ -14,7 +16,9 @@ Checkout sessions are used to collect payments from tenants.
 
 E.g., to create a one-time payment or a subscription. It is also used for setting up a new payment method.
 
-### Request
+#### Request Method:
+
+- `POST`
 
 #### Base URL:
 
@@ -22,24 +26,23 @@ E.g., to create a one-time payment or a subscription. It is also used for settin
 
 #### End Point:
 
-- `/api/v1/checkout-sessions`
+- `/api/v1/tenants/:tenantId/checkout-sessions`
 
-##### Path Variables
+##### Path Variables:
 
-None
+| Variable | Type | Required | Description |
+|---|---|---|---|
+| :tenantId | `String` | `true` | the UUID of the tenant
 
-##### Query Parameters
+##### Query Parameters:
 
 None
 
 #### HTTP Headers:
 
+> Note: Never use API Keys on the client
 
-| Property      | Type        | Required  | Access                 | Description |
-| ------------- | ----------- | --------- | ---------------------- | ----------- |
-| Authorization | `String` | `true` | **Only access to App** |             |
-
-or
+> Note: This endpoint can only be accessed with an API key
 
 | Property       | Type        | Required  | Access                 | Description                   |
 | -------------- | ----------- | --------- | ---------------------- | ----------------------------- |
@@ -48,6 +51,8 @@ or
 | X-CLIENT-ID    | `String` | `true` | **Only access to App** | `UUID` of the userdocks app   |
 
 #### HTTP Body:
+
+> Note: optional variables are marked with a `?` (questionmark) at the end. Do not include the questionmark in the request.
 
 A JSON object.
 
@@ -61,8 +66,8 @@ A JSON object.
   "mode": String, // payment, subscription, setup
   "quantity": Number,
   "isReverseCharge": Boolean,
-  "test": Boolean, // true uses the stripe test api
   "state": String, // 64 character long random string
+  "test?": Boolean, // true uses the stripe test api
 }
 ```
 
@@ -75,11 +80,9 @@ A JSON object.
 ```js
 try {
   // call userdocks user management API
-  const response = await fetch('https://api.userdocks.com/api/v1/checkout-sessions', {
+  const response = await fetch('https://api.userdocks.com/api/v1/tenants/:tenantId/checkout-sessions', {
     method: 'POST',
     headers: {
-      // an access token can also be used
-      // Authorization: `${token.type} ${token.accessToken}`,
       'X-API-KEY': String,
       'X-CLIENT-ID': String,
       'X-API-KEY-TYPE': 'write',
@@ -114,7 +117,7 @@ Can have the following HTTP Status Codes:
 - `200` - OK
 
 ```json
-// POST /api/v1/checkout-sessions
+// POST /api/v1/tenants/:tenantId/checkout-sessions
 {
   "success": Boolean,
   "message": String,
@@ -141,7 +144,7 @@ Can have the following HTTP Status Codes:
 - `500` - Internal Server Error
 
 ```json
-// POST /api/v1/checkout-sessions
+// POST /api/v1/tenants/:tenantId/checkout-sessions
 {
   "success": Boolean,
   "error": String,

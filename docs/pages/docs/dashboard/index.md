@@ -8,7 +8,7 @@ tags: [dashboard]
 
 # Dashboard Overview
 
-The [userdocks dashboard] is the place where you can manage all aspects of your applications, users, and settings.
+The [userdocks dashboard] is the place where you can manage all aspects of the applications, users, and settings.
 
 ![userdocks_dashboard_project_overview]
 

@@ -8,9 +8,9 @@ tags: [api, rest, user management]
 
 # REST Introduction
 
-> An access token provides access to your userdocks application as well as to your own server if you use userdocks to authenticate users. NEVER store them in cookies or in the local storage. Always use the userdocks SDK to access your tokens.
+> An access token provides access to the userdocks application as well as to your own server if you use userdocks to authenticate users. NEVER store them in cookies or in the local storage. Always use the userdocks SDK to access your tokens.
 
-> API keys are like superuser passwords to your userdocks application. NEVER expose them publicly, NEVER send them to the client, and NEVER make requests from the browser with an API key. Always keep them on your server and only store them in memory in an environment variable.
+> API keys are like superuser passwords to the userdocks application. NEVER expose them publicly, NEVER send them to the client, and NEVER make requests from the browser with an API key. Always keep them on your server and only store them in memory in an environment variable.
 
 In this sectionyou will get an overview of the current REST Endpoint of the userdocks API.
 

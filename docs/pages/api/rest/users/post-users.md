@@ -1,20 +1,18 @@
 ---
-id: put-tenant-stripe-subscriptions
-title: PUT /tenants/:tenantId/stripe-subscriptions
-description: PUT /tenants/:tenantId/stripe-subscriptions
-slug: /api/rest/tenants/put-stripe-subcriptions
-tags: [api, rest, user management, tenants, stripe, subscriptions]
+id: post-users
+title: POST /users/:userId
+description: POST /users/:userId
+slug: /api/rest/users/post-users
+tags: [api, rest, user management, users]
 ---
 
 ### Request
 
-> **_Note: You and your company are soley responsible for invoices for the users (customers), as well as all tax obligations that result in any country for you and your company. Use the stripe test API to check your invoices before going into production. E.g., if all necessary data is displayed, as well as if the correct tax is applied, and so on._**
-
-This route upgrades or downgrades a running subscription of a tenant at the end of the current billing cycle.
+This route will send an invite email to a new user.
 
 #### Request Method:
 
-- `PUT`
+- `POST`
 
 #### Base URL:
 
@@ -22,13 +20,13 @@ This route upgrades or downgrades a running subscription of a tenant at the end 
 
 #### End Point:
 
-- `/api/v1/tenants/:tenantId/stripe-subscriptions`
+- `/api/v1/users/:userId`
 
 ##### Path Variables:
 
 | Variable | Type | Required | Description |
 |---|---|---|---|
-| :tenantId | `String` | `true` | the UUID of the tenant
+| :userId | `String` | `true` | the UUID of the user
 
 ##### Query Parameters:
 
@@ -43,7 +41,7 @@ None
 | Property       | Type        | Required  | Access                 | Description                   |
 | -------------- | ----------- | --------- | ---------------------- | ----------------------------- |
 | X-API-KEY      | `String` | `true` | **Only access to App** | Api key for the userdocks app |
-| X-API-KEY-TYPE | `String` | `true` | **Only access to App** | `write`                        |
+| X-API-KEY-TYPE | `String` | `true` | **Only access to App** | `write`                   |
 | X-CLIENT-ID    | `String` | `true` | **Only access to App** | `UUID` of the userdocks app   |
 
 #### HTTP Body:
@@ -54,12 +52,8 @@ A JSON object.
 
 ```json
 {
-  "price": String, // stripe price ID
-  "taxRate": String, // stripe tax rate ID
-  "quantity": Number,
-  "tenantId": String,
-  "userId": String,
-  "test"?: Boolean, // if true uses the stripe test API
+  "email": String,
+  "language": String,
 }
 ```
 
@@ -72,8 +66,8 @@ A JSON object.
 ```js
 try {
   // call userdocks user management API
-  const response = await fetch('https://api.userdocks.com/api/v1/tenants/:tenantId/stripe-subscriptions', {
-    method: 'PUT',
+  const response = await fetch('https://api.userdocks.com/api/v1/users/:userId', {
+    method: 'POST',
     headers: {
       'X-API-KEY': String,
       'X-CLIENT-ID': String,
@@ -81,12 +75,8 @@ try {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      price: String,
-      taxRate: String,
-      quantity: Number,
-      test?: Boolean,
-      tenantId?: String,
-      userId?: String,
+      email: String,
+      language: String,
     }),
   });
   const { data } = await response.json();
@@ -105,12 +95,46 @@ Can have the following HTTP Status Codes:
 - `200` - OK
 
 ```json
-// PUT /api/v1/tenants/:tenantId/stripe-subscriptions
+// POST /api/v1/users
 {
   "success": Boolean,
   "message": String,
   "error": null,
-  "data": null,
+  "data": {
+    "user": {
+      "id": String,
+      "appId":  String,
+      "language": String,
+      "salutation": String,
+      "salutationOther": String,
+      "acceptedNewsletter": Boolean,
+      "acceptedNewsletterDate": String,
+      "lastAskedNewsletterSignUp": String,
+      "mailchimpMemberId": String,
+      "name": String,
+      // open id fields use snake case
+      "given_name": String,
+      "family_name": String,
+      "middle_name": String,
+      "nickname": String,
+      "preferred_username": String,
+      "profile": String,
+      "picture": String,
+      "website": String,
+      "email": String,
+      "email_verified": Boolean,
+      "gender": String,
+      "other_gender": String,
+      "birthdate": String,
+      "zoneinfo": String,
+      "locale": String,
+      "phone_number": String,
+      "phone_number_verified": Boolean,
+      "freezed": Boolean,
+      "deleted": Boolean,
+      "tenantId": Boolean
+    }
+  }
 }
 ```
 
@@ -124,7 +148,7 @@ Can have the following HTTP Status Codes:
 - `500` - Internal Server Error
 
 ```json
-// PUT /api/v1/tenants/:tenantId/stripe-subscriptions
+// POST /api/v1/users
 {
   "success": Boolean,
   "error": String,

@@ -6,9 +6,14 @@ slug: /api/rest/analytics/get-subscriptions
 tags: [api, rest, user management, analytics, subscriptions]
 ---
 
-This route will return the all subscription payments for an application between a two dates.
 
 ### Request
+
+This route will return the all subscription payments for an application between a two dates.
+
+#### Request Method:
+
+- `GET`
 
 #### Base URL:
 
@@ -18,18 +23,22 @@ This route will return the all subscription payments for an application between 
 
 - `/api/v1/analytics/subscriptions`
 
-##### Path Variables
+##### Path Variables:
 
 None
 
-##### Query Parameters
+##### Query Parameters:
 
-- `from`: a date in ISO 8601 format (YYYY-MM-DD) e.g. **2022-12-01**
-- `to`: a date in ISO 8601 format (YYYY-MM-DD) e.g. **2022-12-02**
+| Variable | Type | Required | Description |
+|---|---|---|---|
+| from | `String` | `true` | a date in ISO 8601 format (YYYY-MM-DD) e.g. **2022-12-01**
+| to | `String` | `true` | a date in ISO 8601 format (YYYY-MM-DD) e.g. **2022-12-02**
 
 #### HTTP Headers:
 
-> Note: This endpoint can only be accessed with an API key.
+> Note: Never use API Keys on the client
+
+> Note: This endpoint can only be accessed with an API key
 
 | Property       | Type        | Required  | Access                 | Description                   |
 | -------------- | ----------- | --------- | ---------------------- | ----------------------------- |

@@ -6,13 +6,17 @@ slug: /api/rest/users/put-users-promotion-codes
 tags: [api, rest, user management, apps, checkout-sessions]
 ---
 
+### Request
+
 This route will allow a user to use a promotion code.
 
 E.g., update `freeUnits` or `freeUntil` on a tenant.
 
 These codes can be created via the dashbaord.
 
-### Request
+#### Request Method:
+
+- `PUT`
 
 #### Base URL:
 
@@ -22,38 +26,32 @@ These codes can be created via the dashbaord.
 
 - `/api/v1/users/:userId/promotion-codes/:promotionCode`
 
-##### Path Variables
+##### Path Variables:
 
-- `:userId` (required)
-  - if used with the `Authorization` header with an `access token` you can use the user connected with the `access token`
-- `:promotionCode` (required)
-  - the promotion code to use for the user
+| Variable | Type | Required | Description |
+|---|---|---|---|
+| :userId | `String` | `true` | the UUID of the user
+| :promotionCode | `String` | `true` | the promotion code to use for the user
 
-##### Query Parameters
+##### Query Parameters:
 
 None
 
 #### HTTP Headers:
 
-If used on the client:
+> Note: Never use API Keys on the client
 
-| Property      | Type        | Required  | Access                 | Description |
-| ------------- | ----------- | --------- | ---------------------- | ----------- |
-| Authorization | `String` | `true` | **Only access to App** |             |
-
-If used on the server:
-
-> NOTE: Never use API Keys on the client
+> Note: This endpoint can only be accessed with an API key
 
 | Property       | Type        | Required  | Access                 | Description                   |
 | -------------- | ----------- | --------- | ---------------------- | ----------------------------- |
 | X-API-KEY      | `String` | `true` | **Only access to App** | Api key for the userdocks app |
-| X-API-KEY-TYPE | `String` | `true` | **Only access to App** | `read`                        |
+| X-API-KEY-TYPE | `String` | `true` | **Only access to App** | `write`                        |
 | X-CLIENT-ID    | `String` | `true` | **Only access to App** | `UUID` of the userdocks app   |
 
 #### HTTP Body:
 
-None.
+None
 
 #### Response:
 
@@ -67,11 +65,9 @@ try {
   const response = await fetch('https://api.userdocks.com/api/v1/users/:userId/promotion-codes/:promotionCode', {
     method: 'PUT',
     headers: {
-      // an access token can also be used
-      // Authorization: `${token.type} ${token.accessToken}`,
       'X-API-KEY': String,
       'X-CLIENT-ID': String,
-      'X-API-KEY-TYPE': 'read',
+      'X-API-KEY-TYPE': 'write',
       'Content-Type': 'application/json',
     },
   });

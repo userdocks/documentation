@@ -1,14 +1,18 @@
 ---
 id: get-user-roles
-title: GET /user-roles
+title: GET /apps/:appId/user-roles
 description: GET /user-roles
 slug: /api/rest/user-roles/get-user-roles
 tags: [api, rest, user management, user roles]
 ---
 
+### Request
+
 This route will return all user roles of an app.
 
-### Request
+#### Request Method:
+
+- `GET`
 
 #### Base URL:
 
@@ -16,27 +20,23 @@ This route will return all user roles of an app.
 
 #### End Point:
 
-- `/api/v1/user-roles`
+- `/api/v1/apps/:appId/user-roles`
 
-##### Path Variables
+##### Path Variables:
 
-None
+| Variable | Type | Required | Description |
+|---|---|---|---|
+| :appId | `String` | `true` | the UUID of the app
 
-##### Query Parameters
+##### Query Parameters:
 
 None
 
 #### HTTP Headers:
 
-If used on the client:
+> Note: Never use API Keys on the client
 
-| Property      | Type        | Required  | Access                 | Description |
-| ------------- | ----------- | --------- | ---------------------- | ----------- |
-| Authorization | `String` | `true` | **Only access to App** |             |
-
-If used on the server:
-
-> NOTE: Never use API Keys on the client
+> Note: This endpoint can only be accessed with an API key
 
 | Property       | Type        | Required  | Access                 | Description                   |
 | -------------- | ----------- | --------- | ---------------------- | ----------------------------- |
@@ -46,7 +46,7 @@ If used on the server:
 
 #### HTTP Body:
 
-None.
+None
 
 #### Response:
 
@@ -57,7 +57,7 @@ None.
 ```js
 try {
   // call userdocks user management API
-  const response = await fetch('https://api.userdocks.com/api/v1/user-roles', {
+  const response = await fetch('https://api.userdocks.com/api/v1/apps/:appId/user-roles', {
     method: 'GET',
     headers: {
       // an access token can also be used
@@ -84,7 +84,7 @@ Can have the following HTTP Status Codes:
 - `200` - OK
 
 ```json
-// GET /api/v1/user-roles
+// GET /api/v1/apps/:appId/user-roles
 {
   "success": Boolean,
   "message": String,
@@ -109,7 +109,7 @@ Can have the following HTTP Status Codes:
 - `500` - Internal Server Error
 
 ```json
-// GET /api/v1/user-roles
+// GET /api/v1/apps/:appId/user-roles
 {
   "success": Boolean,
   "error": String,

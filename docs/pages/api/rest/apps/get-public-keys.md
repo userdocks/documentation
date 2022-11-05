@@ -6,9 +6,15 @@ slug: /api/rest/apps/appId/get-public-keys
 tags: [api, rest, user management, apps, public keys]
 ---
 
-This route will return the public key for an application.
 
 ### Request
+
+This route will return the public key for an application.
+
+
+#### Request Method:
+
+- `GET`
 
 #### Base URL:
 
@@ -18,17 +24,21 @@ This route will return the public key for an application.
 
 - `/api/v1/apps/:appId/public-keys`
 
-##### Path Variables
+##### Path Variables:
 
-- `:appId` (required): the UUID of your app
+| Variable | Type | Required | Description |
+|---|---|---|---|
+| :appId | `String` | `true` | the UUID of the app
 
-##### Query Parameters
+##### Query Parameters:
 
 None
 
 #### HTTP Headers:
 
-> Note: This endpoint can only be accessed with an API key.
+> Note: Never use API Keys on the client
+
+> Note: This endpoint can only be accessed with an API key
 
 | Property       | Type        | Required  | Access                 | Description                   |
 | -------------- | ----------- | --------- | ---------------------- | ----------------------------- |
@@ -38,7 +48,7 @@ None
 
 #### HTTP Body:
 
-None.
+None
 
 #### Response:
 

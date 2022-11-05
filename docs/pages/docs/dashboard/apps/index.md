@@ -21,7 +21,7 @@ One example would be:
 * a development application
 * a local application
 
-If you postfix your application with:
+If you postfix the application with:
 
 * dev - e.g. `userdocks dev`
 * staging - e.g. `userdocks staging`

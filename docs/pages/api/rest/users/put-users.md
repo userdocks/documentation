@@ -6,9 +6,13 @@ slug: /api/rest/users/put-users
 tags: [api, rest, user management, users]
 ---
 
+### Request
+
 This route will update a user of an application.
 
-### Request
+#### Request Method:
+
+- `PUT`
 
 #### Base URL:
 
@@ -18,35 +22,65 @@ This route will update a user of an application.
 
 - `/api/v1/users/:userId`
 
-##### Path Variables
+##### Path Variables:
 
-None
+| Variable | Type | Required | Description |
+|---|---|---|---|
+| :userId | `String` | `true` | the UUID of the user
 
-##### Query Parameters
+##### Query Parameters:
 
-None
+| Variable | Type | Required | Description |
+|---|---|---|---|
+| :test | `Boolean` | `false` | indicates if the stripe testing API is used or not
 
 #### HTTP Headers:
 
-If used on the client:
+> Note: Never use API Keys on the client
 
-| Property      | Type        | Required  | Access                 | Description |
-| ------------- | ----------- | --------- | ---------------------- | ----------- |
-| Authorization | `String` | `true` | **Only access to App** |             |
+> Note: This endpoint can only be accessed with an API key
 
-If used on the server:
-
-> NOTE: Never use API Keys on the client
 
 | Property       | Type        | Required  | Access                 | Description                   |
 | -------------- | ----------- | --------- | ---------------------- | ----------------------------- |
 | X-API-KEY      | `String` | `true` | **Only access to App** | Api key for the userdocks app |
-| X-API-KEY-TYPE | `String` | `true` | **Only access to App** | `read`                        |
+| X-API-KEY-TYPE | `String` | `true` | **Only access to App** | `write`                       |
 | X-CLIENT-ID    | `String` | `true` | **Only access to App** | `UUID` of the userdocks app   |
 
 #### HTTP Body:
 
-None.
+> Note: optional variables are marked with a `?` (questionmark) at the end. Do not include the questionmark in the request.
+
+A JSON object:
+
+```json
+{
+  "user": {
+    "language?": String,
+    "salutation?": String,
+    "salutationOther?": String,
+    "acceptedNewsletter?": Boolean,
+    "name?": String,
+    // open id fields use snake case
+    "given_name?": String,
+    "family_name?": String,
+    "middle_name?": String,
+    "nickname?": String,
+    "preferred_username?": String,
+    "profile?": String,
+    "picture?": String,
+    "website?": String,
+    "email?": String,
+    "gender?": String,
+    "other_gender?": String,
+    "birthdate?": String,
+    "zoneinfo?": String,
+    "locale?": String,
+    "phone_number?": String,
+  },
+  "test?": Boolean
+}
+```
 
 #### Response:
 
@@ -60,16 +94,14 @@ try {
   const response = await fetch('https://api.userdocks.com/api/v1/users/:userId', {
     method: 'POST',
     headers: {
-      // an access token can also be used
-      // Authorization: `${token.type} ${token.accessToken}`,
       'X-API-KEY': String,
       'X-CLIENT-ID': String,
-      'X-API-KEY-TYPE': 'read',
+      'X-API-KEY-TYPE': 'write',
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
       user: {
-        id": String,
+        id: String,
         language": String,
         salutation": String,
         salutationOther": String,

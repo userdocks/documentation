@@ -6,11 +6,15 @@ slug: /api/rest/tenants/post-stripe-invoices
 tags: [api, rest, user management, tenants, stripe, invoices, subscriptions, one-time payments]
 ---
 
-> **_NOTE: You and your company are soley responsible for invoices for your users (customers), as well as all tax obligations that result in any country for you and your company. Use the stripe test API to check your invoices before going into production. E.g., if all necessary data is displayed, as well as if the correct tax is applied, and so on._**
+### Request
+
+> **_Note: You and your company are soley responsible for invoices for the users (customers), as well as all tax obligations that result in any country for you and your company. Use the stripe test API to check your invoices before going into production. E.g., if all necessary data is displayed, as well as if the correct tax is applied, and so on._**
 
 This endpoint will create a new invoice for a tenant, charging the stripe default payment method.
 
-### Request
+#### Request Method:
+
+- `POST`
 
 #### Base URL:
 
@@ -20,34 +24,31 @@ This endpoint will create a new invoice for a tenant, charging the stripe defaul
 
 - `/api/v1/tenants/:tenantId/stripe-invoices`
 
-##### Path Variables
+##### Path Variables:
 
-- `:tenantId` (required)
-  - if used with the `Authorization` header with an `access token` you can only get the tenant that is connected to the token
+| Variable | Type | Required | Description |
+|---|---|---|---|
+| :tenantId | `String` | `true` | the UUID of the tenant
 
-##### Query Parameters
+##### Query Parameters:
 
 None
 
 #### HTTP Headers:
 
-If used on the client:
+> Note: Never use API Keys on the client
 
-| Property      | Type        | Required  | Access                 | Description |
-| ------------- | ----------- | --------- | ---------------------- | ----------- |
-| Authorization | `String` | `true` | **Only access to App** |             |
-
-If used on the server:
-
-> NOTE: Never use API Keys on the client
+> Note: This endpoint can only be accessed with an API key
 
 | Property       | Type        | Required  | Access                 | Description                   |
 | -------------- | ----------- | --------- | ---------------------- | ----------------------------- |
 | X-API-KEY      | `String` | `true` | **Only access to App** | Api key for the userdocks app |
-| X-API-KEY-TYPE | `String` | `true` | **Only access to App** | `read`                        |
+| X-API-KEY-TYPE | `String` | `true` | **Only access to App** | `write`                        |
 | X-CLIENT-ID    | `String` | `true` | **Only access to App** | `UUID` of the userdocks app   |
 
 #### HTTP Body:
+
+> Note: optional variables are marked with a `?` (questionmark) at the end. Do not include the questionmark in the request.
 
 A JSON object.
 
@@ -57,10 +58,10 @@ A JSON object.
   "taxRate": String, // stripe tax rate ID
   "mode": String, // payment, subscription
   "quantity": Number,
-  "test"?: Boolean, // if true uses the stripe test API
-  "footer"?: String, // footer text of the invoice
-  "tenantId"?: String, // only if used with API key
-  "userId"?: String, // only if used with API key
+  "tenantId": String,
+  "userId": String,
+  "test?": Boolean, // if true uses the stripe test API
+  "footer?": String, // footer text of the invoice
 }
 ```
 
@@ -74,10 +75,8 @@ A JSON object.
 try {
   // call userdocks user management API
   const response = await fetch('https://api.userdocks.com/api/v1/tenants/:tenantId/stripe-invoices', {
-    method: 'PUT',
+    method: 'POST',
     headers: {
-      // an access token can also be used
-      // Authorization: `${token.type} ${token.accessToken}`,
       'X-API-KEY': String,
       'X-CLIENT-ID': String,
       'X-API-KEY-TYPE': 'write',
@@ -90,8 +89,8 @@ try {
       quantity: Number,
       test?: Boolean, // if true uses the stripe test API
       footer?: String, // footer text of the invoice
-      tenantId?: String, // only if used with API key
-      userId?: String, // only if used with API key
+      tenantId?: String,
+      userId?: String,
     }),
   });
   const { data } = await response.json();
@@ -110,7 +109,7 @@ Can have the following HTTP Status Codes:
 - `201` - Created
 
 ```json
-// PUT /api/v1/tenants/:tenantId/stripe-invoices
+// POST /api/v1/tenants/:tenantId/stripe-invoices
 {
   "success": Boolean,
   "message": String,
@@ -131,7 +130,7 @@ Can have the following HTTP Status Codes:
 - `500` - Internal Server Error
 
 ```json
-// PUT /api/v1/tenants/:tenantId/stripe-invoices
+// POST /api/v1/tenants/:tenantId/stripe-invoices
 {
   "success": Boolean,
   "error": String,

@@ -6,11 +6,15 @@ slug: /api/rest/tenants/delete-stripe-subscriptions
 tags: [api, rest, user management, tenants, stripe, subscriptions]
 ---
 
-> **_NOTE: You and your company are soley responsible for invoices for your users (customers), as well as all tax obligations that result in any country for you and your company. Use the stripe test API to check your invoices before going into production. E.g., if all necessary data is displayed, as well as if the correct tax is applied, and so on._**
+### Request
+
+> **_Note: You and your company are soley responsible for invoices for the users (customers), as well as all tax obligations that result in any country for you and your company. Use the stripe test API to check your invoices before going into production. E.g., if all necessary data is displayed, as well as if the correct tax is applied, and so on._**
 
 This route cancel the subscription of the tenant at the end of the current billing cycle.
 
-### Request
+#### Request Method:
+
+- `DELETE`
 
 #### Base URL:
 
@@ -20,26 +24,24 @@ This route cancel the subscription of the tenant at the end of the current billi
 
 - `/api/v1/tenants/:tenantId/stripe-subscriptions`
 
-##### Path Variables
+##### Path Variables:
 
-- `:tenantId` (required) - ID of the tenant
-  - if used with the `Authorization` header with an `access token` you can only get the tenant that is connected to the token
+| Variable | Type | Required | Description |
+|---|---|---|---|
+| :tenantId | `String` | `true` | the UUID of the tenant
 
-##### Query Parameters
+##### Query Parameters:
 
-None
+| Variable | Type | Required | Description |
+|---|---|---|---|
+| :userId | `String` | `true` | the UUID of the tenant
+| :test | `Boolean` | `false` | indicates if the stripe testing API is used or not
 
 #### HTTP Headers:
 
-If used on the client:
+> Note: Never use API Keys on the client
 
-| Property      | Type        | Required  | Access                 | Description |
-| ------------- | ----------- | --------- | ---------------------- | ----------- |
-| Authorization | `String` | `true` | **Only access to App** |             |
-
-If used on the server:
-
-> NOTE: Never use API Keys on the client
+> Note: This endpoint can only be accessed with an API key
 
 | Property       | Type        | Required  | Access                 | Description                   |
 | -------------- | ----------- | --------- | ---------------------- | ----------------------------- |
@@ -49,14 +51,7 @@ If used on the server:
 
 #### HTTP Body:
 
-A JSON object.
-
-```json
-{
-  "userId"?: String, // only if used with API key
-  "test"?: Boolean, // if true uses the stripe test api
-}
-```
+None
 
 #### Response:
 
@@ -67,20 +62,14 @@ A JSON object.
 ```js
 try {
   // call userdocks user management API
-  const response = await fetch('https://api.userdocks.com/api/v1/tenants/:tenantId/stripe-subscriptions', {
-    method: 'PUT',
+  const response = await fetch('https://api.userdocks.com/api/v1/tenants/:tenantId/stripe-subscriptions?userId?=String&test?=Boolean', {
+    method: 'DELETE',
     headers: {
-      // an access token can also be used
-      // Authorization: `${token.type} ${token.accessToken}`,
       'X-API-KEY': String,
       'X-CLIENT-ID': String,
       'X-API-KEY-TYPE': 'write',
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({
-      userId?: String, // only if used with API key
-      test?: Boolean, // if true uses the stripe test api
-    }),
   });
   const { data } = await response.json();
 
@@ -98,7 +87,7 @@ Can have the following HTTP Status Codes:
 - `200` - OK
 
 ```json
-// PUT /api/v1/tenants/:tenantId/stripe-subscriptions
+// DELETE /api/v1/tenants/:tenantId/stripe-subscriptions
 {
   "success": Boolean,
   "message": String,
@@ -117,7 +106,7 @@ Can have the following HTTP Status Codes:
 - `500` - Internal Server Error
 
 ```json
-// PUT /api/v1/tenants/:tenantId
+// DELETE /api/v1/tenants/:tenantId
 {
   "success": Boolean,
   "error": String,

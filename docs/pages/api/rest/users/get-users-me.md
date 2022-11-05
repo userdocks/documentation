@@ -1,14 +1,14 @@
 ---
 id: get-users
-title: GET /users/:userId
-description: GET /users/:userId
+title: GET /users/me
+description: GET /users/me
 slug: /api/rest/users/get-users
 tags: [api, rest, user management, users]
 ---
 
 ### Request
 
-This route will return a user.
+This route will return the user that is connected with the bearer token.
 
 #### Request Method:
 
@@ -20,29 +20,23 @@ This route will return a user.
 
 #### End Point:
 
-- `/api/v1/users/:userId`
+- `/api/v1/users/me`
 
-##### Path Variables:
+##### Path Variables
 
-| Variable | Type | Required | Description |
-|---|---|---|---|
-| :userId | `String` | `true` | the UUID or the email of the user
+None
 
-##### Query Parameters:
+##### Query Parameters
 
 None
 
 #### HTTP Headers:
 
-> Note: Never use API Keys on the client
+> Note: This endpoint can only be accessed with an Bearer token.
 
-> Note: This endpoint can only be accessed with an API key
-
-| Property       | Type        | Required  | Access                 | Description                   |
-| -------------- | ----------- | --------- | ---------------------- | ----------------------------- |
-| X-API-KEY      | `String` | `true` | **Only access to App** | Api key for the userdocks app |
-| X-API-KEY-TYPE | `String` | `true` | **Only access to App** | `read`                   |
-| X-CLIENT-ID    | `String` | `true` | **Only access to App** | `UUID` of the userdocks app   |
+| Property      | Type        | Required  | Access                 | Description |
+| ------------- | ----------- | --------- | ---------------------- | ----------- |
+| Authorization | `String` | `true` | **Only access to App** |             |
 
 #### HTTP Body:
 
@@ -57,13 +51,11 @@ None
 ```js
 try {
   // call userdocks user management API
-  const response = await fetch('https://api.userdocks.com/api/v1/users/:userId', {
+  const response = await fetch('https://api.userdocks.com/api/v1/users/me', {
     method: 'GET',
     headers: {
-      'X-API-KEY': String,
-      'X-CLIENT-ID': String,
-      'X-API-KEY-TYPE': 'read',
-      'Content-Type': 'application/json',
+      // an access token can also be used
+      Authorization: `${token.type} ${token.accessToken}`,
     },
   });
   const { data } = await response.json();
@@ -82,7 +74,7 @@ Can have the following HTTP Status Codes:
 - `200` - OK
 
 ```json
-// GET /api/v1/users
+// GET /api/v1/users/me
 {
   "success": Boolean,
   "message": String,
@@ -135,7 +127,7 @@ Can have the following HTTP Status Codes:
 - `500` - Internal Server Error
 
 ```json
-// GET /api/v1/users
+// GET /api/v1/users/me
 {
   "success": Boolean,
   "error": String,

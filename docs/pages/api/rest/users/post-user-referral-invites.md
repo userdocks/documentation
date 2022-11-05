@@ -6,9 +6,13 @@ slug: /api/rest/users/post-users-referral-invites
 tags: [api, rest, user management, users, referral invites]
 ---
 
-This route will send an invite email to a new user.
-
 ### Request
+
+This route will send an invite email to a new user with an referal code that is linked to the current user.
+
+#### Request Method:
+
+- `POST`
 
 #### Base URL:
 
@@ -18,26 +22,21 @@ This route will send an invite email to a new user.
 
 - `/api/v1/users/:userId/referral-invites`
 
-##### Path Variables
+##### Path Variables:
 
-- `:userId` (required)
-  - if used with the `Authorization` header with an `access token` you can use the user connected with the `access token`
+| Variable | Type | Required | Description |
+|---|---|---|---|
+| :userId | `String` | `true` | the UUID of the user
 
-##### Query Parameters
+##### Query Parameters:
 
 None
 
 #### HTTP Headers:
 
-If used on the client:
+> Note: Never use API Keys on the client
 
-| Property      | Type        | Required  | Access                 | Description |
-| ------------- | ----------- | --------- | ---------------------- | ----------- |
-| Authorization | `String` | `true` | **Only access to App** |             |
-
-If used on the server:
-
-> NOTE: Never use API Keys on the client
+> Note: This endpoint can only be accessed with an API key
 
 | Property       | Type        | Required  | Access                 | Description                   |
 | -------------- | ----------- | --------- | ---------------------- | ----------------------------- |
@@ -46,6 +45,8 @@ If used on the server:
 | X-CLIENT-ID    | `String` | `true` | **Only access to App** | `UUID` of the userdocks app   |
 
 #### HTTP Body:
+
+> Note: optional variables are marked with a `?` (questionmark) at the end. Do not include the questionmark in the request.
 
 A JSON object.
 
@@ -68,11 +69,9 @@ try {
   const response = await fetch('https://api.userdocks.com/api/v1/users/:userId/referral-invites', {
     method: 'POST',
     headers: {
-      // an access token can also be used
-      // Authorization: `${token.type} ${token.accessToken}`,
       'X-API-KEY': String,
       'X-CLIENT-ID': String,
-      'X-API-KEY-TYPE': 'read',
+      'X-API-KEY-TYPE': 'write',
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({

@@ -231,11 +231,6 @@ const sidebars = {
           items: [
             {
               type: 'doc',
-              label: 'GET /apps/:appId/secrets',
-              id: 'api/rest/apps/get-secrets',
-            },
-            {
-              type: 'doc',
               label: 'GET /apps/:appId/public-keys',
               id: 'api/rest/apps/get-public-keys',
             },
@@ -244,20 +239,15 @@ const sidebars = {
               label: 'GET /apps/:appId/promotions',
               id: 'api/rest/apps/get-promotions',
             },
-          ],
-        },
-        {
-          type: 'category',
-          link: {
-            type: 'generated-index',
-          },
-          collapsed: true,
-          label: 'Checkout Sessions',
-          items: [
             {
               type: 'doc',
-              label: 'GET /checkout-sessions',
-              id: 'api/rest/checkout-sessions/post-checkout-sessions',
+              label: 'GET /apps/:appId/user-roles',
+              id: 'api/rest/apps/get-user-roles',
+            },
+            {
+              type: 'doc',
+              label: 'PUT /apps/:appId/users/userId/access-status/:accessStatus',
+              id: 'api/rest/apps/put-user-access-status',
             },
           ],
         },
@@ -271,6 +261,11 @@ const sidebars = {
           items: [
             {
               type: 'doc',
+              label: 'GET /tenants/me',
+              id: 'api/rest/tenants/get-tenants-me',
+            },
+            {
+              type: 'doc',
               label: 'GET /tenants/:tenantId',
               id: 'api/rest/tenants/get-tenants',
             },
@@ -278,6 +273,11 @@ const sidebars = {
               type: 'doc',
               label: 'PUT /tenants/:tenantId',
               id: 'api/rest/tenants/put-tenants',
+            },
+            {
+              type: 'doc',
+              label: 'POST /tenants/:tenantId/checkout-sessions',
+              id: 'api/rest/tenants/post-tenant-checkout-sessions',
             },
             {
               type: 'doc',
@@ -312,23 +312,13 @@ const sidebars = {
             type: 'generated-index',
           },
           collapsed: true,
-          label: 'User Roles',
+          label: 'Users',
           items: [
             {
               type: 'doc',
-              label: 'GET /user-roles',
-              id: 'api/rest/user-roles/get-user-roles',
+              label: 'POST /users/:userId',
+              id: 'api/rest/users/post-users',
             },
-          ],
-        },
-        {
-          type: 'category',
-          link: {
-            type: 'generated-index',
-          },
-          collapsed: true,
-          label: 'Users',
-          items: [
             {
               type: 'doc',
               label: 'GET /users/:userId',
@@ -343,21 +333,6 @@ const sidebars = {
               type: 'doc',
               label: 'DELETE /users/:userId',
               id: 'api/rest/users/delete-users',
-            },
-            {
-              type: 'doc',
-              label: 'PUT /users/:userId/user-roles',
-              id: 'api/rest/users/put-users-user-roles',
-            },
-            {
-              type: 'doc',
-              label: 'DELETE /users/:userId/user-roles',
-              id: 'api/rest/users/delete-users-user-roles',
-            },
-            {
-              type: 'doc',
-              label: 'PUT /users/:userId/access-status/:accessStatus',
-              id: 'api/rest/users/put-users-access-status',
             },
             {
               type: 'doc',

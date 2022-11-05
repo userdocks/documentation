@@ -6,9 +6,13 @@ slug: /api/rest/analytics/get-sign-ins
 tags: [api, rest, user management, analytics, sign ins]
 ---
 
+### Request
+
 This route will return all sign-ins of users for an application between a two dates.
 
-### Request
+#### Request Method:
+
+- `GET`
 
 #### Base URL:
 
@@ -18,20 +22,22 @@ This route will return all sign-ins of users for an application between a two da
 
 - `/api/v1/analytics/sign-ins`
 
-##### Path Variables
+##### Path Variables:
 
 None
 
-##### Query Parameters
+##### Query Parameters:
 
-- `from`: a date in ISO 8601 format (YYYY-MM-DD) e.g. **2022-12-01**
-- `to`: a date in ISO 8601 format (YYYY-MM-DD) e.g. **2022-12-02**
+| Variable | Type | Required | Description |
+|---|---|---|---|
+| from | `String` | `true` | a date in ISO 8601 format (YYYY-MM-DD) e.g. **2022-12-01**
+| to | `String` | `true` | a date in ISO 8601 format (YYYY-MM-DD) e.g. **2022-12-02**
 
 #### HTTP Headers:
 
-> NOTE: Never use API Keys on the client
+> Note: Never use API Keys on the client
 
-> Note: This endpoint can only be accessed with an API key.
+> Note: This endpoint can only be accessed with an API key
 
 | Property       | Type        | Required  | Access                 | Description                   |
 | -------------- | ----------- | --------- | ---------------------- | ----------------------------- |

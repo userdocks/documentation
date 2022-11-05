@@ -1,16 +1,18 @@
 ---
-id: put-users-access-status
-title: PUT /users/:userId/access-status/:accessStatus
+id: put-user-access-status
+title: PUT /apps/:appId/users/:userId/access-status/:accessStatus
 description: PUT /users/:userId/access-status/:accessStatus
 slug: /api/rest/users/put-users-access-status
 tags: [api, rest, user management, user, access status]
 ---
 
-> Note: The user needs permissions to change the access status
+### Request
 
 This route will change the access status on a account.
 
-### Request
+#### Request Method:
+
+- `PUT`
 
 #### Base URL:
 
@@ -18,40 +20,35 @@ This route will change the access status on a account.
 
 #### End Point:
 
-- `/api/v1/users/:userId/access-status/:accessStatus`
+- `/api/v1/apps/:appId/users/:userId/access-status/:accessStatus`
 
-##### Path Variables
+##### Path Variables:
 
-- `:userId` (required)
-  - if used with the `Authorization` header with an `access token` you can use the user connected with the `access token`
-- `:accessStatus` (required)
-  - either `0` or `1` equivalent to `freezed` or `unfreezed`
+| Variable | Type | Required | Description |
+|---|---|---|---|
+| :appId | `String` | `true` | the UUID of the app
+| :userId | `String` | `true` | the UUID of the user
+| :accessStatus | `String` | `true` | either `0` or `1` equivalent to `freezed` or `unfreezed`
 
-##### Query Parameters
+##### Query Parameters:
 
 None
 
 #### HTTP Headers:
 
-If used on the client:
+> Note: Never use API Keys on the client
 
-| Property      | Type        | Required  | Access                 | Description |
-| ------------- | ----------- | --------- | ---------------------- | ----------- |
-| Authorization | `String` | `true` | **Only access to App** |             |
-
-If used on the server:
-
-> NOTE: Never use API Keys on the client
+> Note: This endpoint can only be accessed with an API key
 
 | Property       | Type        | Required  | Access                 | Description                   |
 | -------------- | ----------- | --------- | ---------------------- | ----------------------------- |
 | X-API-KEY      | `String` | `true` | **Only access to App** | Api key for the userdocks app |
-| X-API-KEY-TYPE | `String` | `true` | **Only access to App** | `read`                        |
+| X-API-KEY-TYPE | `String` | `true` | **Only access to App** | `write`                        |
 | X-CLIENT-ID    | `String` | `true` | **Only access to App** | `UUID` of the userdocks app   |
 
 #### HTTP Body:
 
-None.
+None
 
 #### Response:
 
@@ -62,11 +59,9 @@ None.
 ```js
 try {
   // call userdocks user management API
-  const response = await fetch('https://api.userdocks.com/api/v1/users/:userId/access-status/:accessStatus', {
-    method: 'POST',
+  const response = await fetch('https://api.userdocks.com/api/v1/apps/:appId/users/:userId/access-status/:accessStatus', {
+    method: 'PUT',
     headers: {
-      // an access token can also be used
-      // Authorization: `${token.type} ${token.accessToken}`,
       'X-API-KEY': String,
       'X-CLIENT-ID': String,
       'X-API-KEY-TYPE': 'write',
@@ -91,7 +86,7 @@ Can have the following HTTP Status Codes:
 - `200` - OK
 
 ```json
-// POST /api/v1/users/:userId/access-status/:accessStatus
+// POST /api/v1/apps/:appId/users/:userId/access-status/:accessStatus
 {
   "success": Boolean,
   "message": String,

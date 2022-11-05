@@ -6,11 +6,15 @@ slug: /api/rest/users/delete-users
 tags: [api, rest, user management, users]
 ---
 
+### Request
+
 This route will delete a user from an application.
 
 If a user is deleted the tenant will also be deleted, as well as all subscriptions at the end of the current billing cycle.
 
-### Request
+#### Request Method:
+
+- `DELETE`
 
 #### Base URL:
 
@@ -20,26 +24,23 @@ If a user is deleted the tenant will also be deleted, as well as all subscriptio
 
 - `/api/v1/users/:userId`
 
-##### Path Variables
+##### Path Variables:
 
-- `:userId` (required)
-  - if used with the `Authorization` header with an `access token` you can use the user connected with the `access token`
+| Variable | Type | Required | Description |
+|---|---|---|---|
+| :userId | `String` | `true` | the UUID of the user
 
-##### Query Parameters
+##### Query Parameters:
 
-None
+| Variable | Type | Required | Description |
+|---|---|---|---|
+| :test | `Boolean` | `false` | indicates if the stripe testing API is used or not
 
 #### HTTP Headers:
 
-If used on the client:
+> Note: Never use API Keys on the client
 
-| Property      | Type        | Required  | Access                 | Description |
-| ------------- | ----------- | --------- | ---------------------- | ----------- |
-| Authorization | `String` | `true` | **Only access to App** |             |
-
-If used on the server:
-
-> NOTE: Never use API Keys on the client
+> Note: This endpoint can only be accessed with an API key
 
 | Property       | Type        | Required  | Access                 | Description                   |
 | -------------- | ----------- | --------- | ---------------------- | ----------------------------- |
@@ -49,7 +50,7 @@ If used on the server:
 
 #### HTTP Body:
 
-None.
+None
 
 #### Response:
 
@@ -63,15 +64,11 @@ try {
   const response = await fetch('https://api.userdocks.com/api/v1/users/:userId', {
     method: 'DELETE',
     headers: {
-      // an access token can also be used
-      // Authorization: `${token.type} ${token.accessToken}`,
       'X-API-KEY': String,
       'X-CLIENT-ID': String,
       'X-API-KEY-TYPE': 'write',
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({
-    })
   });
   const { data } = await response.json();
 
@@ -89,7 +86,7 @@ Can have the following HTTP Status Codes:
 - `200` - OK
 
 ```json
-// POST /api/v1/users/:userId
+// DELETE /api/v1/users/:userId
 {
   "success": Boolean,
   "message": String,
@@ -108,7 +105,7 @@ Can have the following HTTP Status Codes:
 - `500` - Internal Server Error
 
 ```json
-// POST /api/v1/users/:userId
+// DELETE /api/v1/users/:userId
 {
   "success": Boolean,
   "error": String,
