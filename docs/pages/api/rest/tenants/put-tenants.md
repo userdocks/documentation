@@ -36,13 +36,19 @@ None
 
 > Note: Never use API Keys on the client
 
-> Note: This endpoint can only be accessed with an API key
+Access from your server via API keys:
 
 | Property       | Type        | Required  | Access                 | Description                   |
 | -------------- | ----------- | --------- | ---------------------- | ----------------------------- |
 | X-API-KEY      | `String` | `true` | **Only access to App** | Api key for the userdocks app |
 | X-API-KEY-TYPE | `String` | `true` | **Only access to App** | `write`                       |
 | X-CLIENT-ID    | `String` | `true` | **Only access to App** | `UUID` of the userdocks app   |
+
+Access from the client via an access token:
+
+| Property       | Type        | Required  | Access                 | Description                   |
+| -------------- | ----------- | --------- | ---------------------- | ----------------------------- |
+| Authorization  | `String` | `true` | **Only access to this tenant** | Access Token for userdocks tenant |
 
 #### HTTP Body:
 
@@ -52,34 +58,33 @@ A JSON object.
 
 ```json
 {
-  "tenant": {
+  "kind": "tenant",
+  "name?": String,
+  "stripeOneTimePaymentValidThru?": String,
+  "description?": String,
+  "companyName?": String,
+  "companyVATId?": String, // value added tax identification number
+  "companyTaxType?": String,
+  "companyTaxExempt?": String, // none, exempt or reverse
+  "isBusinessCustomer?": Boolean,
+  "isInvoicePending?": Boolean,
+  "shippingAddress?": {
     "name?": String,
-    "stripeOneTimePaymentValidThru?": String,
-    "description?": String,
-    "companyName?": String,
-    "companyVATId?": String, // value added tax identification number
-    "companyTaxType?": String,
-    "companyTaxExempt?": String, // none, exempt or reverse
-    "isBusinessCustomer?": Boolean,
-    "isInvoicePending?": Boolean,
-    "shippingAddress?": {
-      "name?": String,
-      "city?": String,
-      "country?": String,
-      "line1?": String,
-      "line2?": String,
-      "postal_code?": String,
-      "state?": String,
-    },
-    "billingAddress?": {
-      "name?": String,
-      "city?": String,
-      "country?": String,
-      "line1?": String,
-      "line2?": String,
-      "postal_code?": String,
-      "state?": String,
-    },
+    "city?": String,
+    "country?": String,
+    "line1?": String,
+    "line2?": String,
+    "postal_code?": String,
+    "state?": String,
+  },
+  "billingAddress?": {
+    "name?": String,
+    "city?": String,
+    "country?": String,
+    "line1?": String,
+    "line2?": String,
+    "postal_code?": String,
+    "state?": String,
   },
   "test?": Boolean
 }
@@ -97,6 +102,7 @@ try {
   const response = await fetch('https://api.userdocks.com/api/v1/tenants/:tenantId', {
     method: 'PUT',
     headers: {
+      // 'Authorization': String, // when accessed from the client e.g. `Bearer ${accessToken}`
       'X-API-KEY': String,
       'X-CLIENT-ID': String,
       'X-API-KEY-TYPE': 'write',

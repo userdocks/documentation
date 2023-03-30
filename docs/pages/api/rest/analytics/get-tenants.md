@@ -86,7 +86,9 @@ Can have the following HTTP Status Codes:
   "message": String,
   "error": null,
   "data": {
-    "tenants": [
+    "kind": "analyticsTenant",
+    "itemsLength": Number,
+    "items": [
       {
         id: String,
         name: String,
@@ -142,7 +144,6 @@ Can have the following HTTP Status Codes:
             language: String,
             salutation: String,
             salutationOther: String,
-      
             acceptedNewsletter: Boolean,
             acceptedNewsletterDate: String,
             lastAskedNewsletterSignUp: String,

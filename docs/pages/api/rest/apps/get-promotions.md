@@ -89,7 +89,11 @@ Can have the following HTTP Status Codes:
   "message": String,
   "error": null,
   "data": {
-    "publicKey": String
+    "kind": "promotion",
+    "itemsLength": Number,
+    "items": [
+      {}
+    ]
   }
 }
 ```

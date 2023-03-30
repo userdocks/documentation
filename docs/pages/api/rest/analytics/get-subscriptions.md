@@ -86,7 +86,9 @@ Can have the following HTTP Status Codes:
   "message": String,
   "error": null,
   "data": {
-    "subscriptions": [
+    "kind": "analyticsSubscription",
+    "itemsLength": Number,
+    "items": [
       {
         "id": String,
         "paid": Boolean,

@@ -42,13 +42,19 @@ tags: [api, rest, user management, tenants, stripe, invoices]
 
 > Note: Never use API Keys on the client
 
-> Note: This endpoint can only be accessed with an API key
+Access from your server via API keys:
 
 | Property       | Type        | Required  | Access                 | Description                   |
 | -------------- | ----------- | --------- | ---------------------- | ----------------------------- |
 | X-API-KEY      | `String` | `true` | **Only access to App** | Api key for the userdocks app |
-| X-API-KEY-TYPE | `String` | `true` | **Only access to App** | `read`                      |
+| X-API-KEY-TYPE | `String` | `true` | **Only access to App** | `write`                       |
 | X-CLIENT-ID    | `String` | `true` | **Only access to App** | `UUID` of the userdocks app   |
+
+Access from the client via an access token:
+
+| Property       | Type        | Required  | Access                 | Description                   |
+| -------------- | ----------- | --------- | ---------------------- | ----------------------------- |
+| Authorization  | `String` | `true` | **Only access to this tenant** | Access Token for userdocks tenant |
 
 #### HTTP Body:
 
@@ -66,6 +72,7 @@ try {
   const response = await fetch('https://api.userdocks.com/api/v1/tenants/:tenantId/stripe-invoices?userId=String', {
     method: 'GET',
     headers: {
+      // 'Authorization': String, // when accessed from the client e.g. `Bearer ${accessToken}`
       'X-API-KEY': String,
       'X-CLIENT-ID': String,
       'X-API-KEY-TYPE': 'read',

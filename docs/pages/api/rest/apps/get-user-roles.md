@@ -89,7 +89,10 @@ Can have the following HTTP Status Codes:
   "success": Boolean,
   "message": String,
   "error": null,
-  "data": [
+  "data": {
+    "kind": "userRole",
+    "itemsLength": Number,
+    "items":[
       {
         id: String,
         name: String,
