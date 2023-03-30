@@ -1,0 +1,10 @@
+# Uses the built-in dictionary and filters.
+extends: spelling
+message: "Did you really mean '%s'?"
+level: error
+action:
+  name: suggest
+  params:
+    - spellings
+ignore:
+  - styles/Microsoft/vocab.txt

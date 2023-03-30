@@ -4,7 +4,7 @@ const baseDocusaurus = require('../docusaurus.base');
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   ...baseDocusaurus,
-  title: 'Documentation',
+  title: 'userdocks',
   tagline: '',
   url: 'https://docs.userdocks.com',
   staticDirectories: ['../static'],
@@ -17,7 +17,12 @@ const config = {
       items: [
         {
           to: '/',
-          label: 'Documentation',
+          label: 'Dashboard',
+          position: 'left',
+        },
+        {
+          to: '/api',
+          label: 'API',
           position: 'left',
         },
         // {
@@ -40,6 +45,7 @@ const config = {
           routeBasePath: '/',
           path: 'pages',
           editUrl: 'https://github.com/userdocks/public-resources/tree/main/docs/',
+          sidebarPath: 'sidebars.js',
         },
         blog: false,
         theme: {
