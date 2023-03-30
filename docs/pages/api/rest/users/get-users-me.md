@@ -1,5 +1,5 @@
 ---
-id: get-users
+id: get-users-me
 title: GET /users/me
 description: GET /users/me
 slug: /api/rest/users/get-users
