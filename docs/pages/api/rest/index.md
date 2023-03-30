@@ -16,6 +16,6 @@ In this sectionyou will get an overview of the current REST Endpoint of the user
 
 If an app user has an user role with the appropriate access, it can access the userdocks user management REST API. You can also manage the userdocks users via your own server with read only and write only api keys.
 
-There are 6 different Access Controll Functions which can be toggled (on/off) on creation of an [user role](/user-management).
+There are 6 different Access Controll Functions which can be toggled (on/off) on creation of an [user role](/dashboard/user-management).
 
-You can toggle a user role (on/off) in the [dashboard for each user](/user-management) or by using this API.
+You can toggle a user role (on/off) in the [dashboard for each user](/dashboard/user-management) or by using this API.

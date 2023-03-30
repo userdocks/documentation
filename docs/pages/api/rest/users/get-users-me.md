@@ -2,7 +2,7 @@
 id: get-users-me
 title: GET /users/me
 description: GET /users/me
-slug: /api/rest/users/get-users
+slug: /api/rest/users/get-users-me
 tags: [api, rest, user management, users]
 ---
 
