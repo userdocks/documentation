@@ -26,7 +26,7 @@ E.g., to create a one-time payment or a subscription. It is also used for settin
 
 #### End Point:
 
-- `/api/v1/tenants/:tenantId/checkout-sessions`
+- `/v1/tenants/:tenantId/checkout-sessions`
 
 ##### Path Variables:
 
@@ -86,7 +86,7 @@ A JSON object.
 ```js
 try {
   // call userdocks user management API
-  const response = await fetch('https://api.userdocks.com/api/v1/tenants/:tenantId/checkout-sessions', {
+  const response = await fetch('https://api.userdocks.com/v1/tenants/:tenantId/checkout-sessions', {
     method: 'POST',
     headers: {
       // 'Authorization': String, // when accessed from the client e.g. `Bearer ${accessToken}`
@@ -124,7 +124,7 @@ Can have the following HTTP Status Codes:
 - `200` - OK
 
 ```json
-// POST /api/v1/tenants/:tenantId/checkout-sessions
+// POST /v1/tenants/:tenantId/checkout-sessions
 {
   "success": Boolean,
   "message": String,
@@ -150,7 +150,7 @@ Can have the following HTTP Status Codes:
 - `500` - Internal Server Error
 
 ```json
-// POST /api/v1/tenants/:tenantId/checkout-sessions
+// POST /v1/tenants/:tenantId/checkout-sessions
 {
   "success": Boolean,
   "error": String,

@@ -20,7 +20,7 @@ This route will return a tenant of the app.
 
 #### End Point:
 
-- `/api/v1/tenants/:tenantId`
+- `/v1/tenants/:tenantId`
 
 ##### Path Variables:
 
@@ -57,7 +57,7 @@ None
 ```js
 try {
   // call userdocks user management API
-  const response = await fetch('https://api.userdocks.com/api/v1/tenants/:tenantId', {
+  const response = await fetch('https://api.userdocks.com/v1/tenants/:tenantId', {
     method: 'GET',
     headers: {
       'X-API-KEY': String,
@@ -82,7 +82,7 @@ Can have the following HTTP Status Codes:
 - `200` - OK
 
 ```json
-// GET /api/v1/tenants/:tenantId
+// GET /v1/tenants/:tenantId
 {
   "success": Boolean,
   "message": String,
@@ -202,7 +202,7 @@ Can have the following HTTP Status Codes:
 - `500` - Internal Server Error
 
 ```json
-// GET /api/v1/tenants/:tenantId
+// GET /v1/tenants/:tenantId
 {
   "success": Boolean,
   "error": String,

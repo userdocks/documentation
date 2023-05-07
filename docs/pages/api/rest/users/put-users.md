@@ -20,7 +20,7 @@ This route will update a user of an application.
 
 #### End Point:
 
-- `/api/v1/users/:userId`
+- `/v1/users/:userId`
 
 ##### Path Variables:
 
@@ -96,7 +96,7 @@ A JSON object:
 ```js
 try {
   // call userdocks user management API
-  const response = await fetch('https://api.userdocks.com/api/v1/users/:userId', {
+  const response = await fetch('https://api.userdocks.com/v1/users/:userId', {
     method: 'POST',
     headers: {
       // 'Authorization': String, // when accessed from the client e.g. `Bearer ${accessToken}`
@@ -151,7 +151,7 @@ Can have the following HTTP Status Codes:
 - `200` - OK
 
 ```json
-// POST /api/v1/users/:userId
+// POST /v1/users/:userId
 {
   "success": Boolean,
   "message": String,
@@ -170,7 +170,7 @@ Can have the following HTTP Status Codes:
 - `500` - Internal Server Error
 
 ```json
-// POST /api/v1/users/:userId
+// POST /v1/users/:userId
 {
   "success": Boolean,
   "error": String,

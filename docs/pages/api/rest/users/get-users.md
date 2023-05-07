@@ -20,7 +20,7 @@ This route will return a user.
 
 #### End Point:
 
-- `/api/v1/users/:userId`
+- `/v1/users/:userId`
 
 ##### Path Variables:
 
@@ -57,7 +57,7 @@ None
 ```js
 try {
   // call userdocks user management API
-  const response = await fetch('https://api.userdocks.com/api/v1/users/:userId', {
+  const response = await fetch('https://api.userdocks.com/v1/users/:userId', {
     method: 'GET',
     headers: {
       // 'Authorization': String, // when accessed from the client e.g. `Bearer ${accessToken}`
@@ -83,7 +83,7 @@ Can have the following HTTP Status Codes:
 - `200` - OK
 
 ```json
-// GET /api/v1/users
+// GET /v1/users
 {
   "success": Boolean,
   "message": String,
@@ -135,7 +135,7 @@ Can have the following HTTP Status Codes:
 - `500` - Internal Server Error
 
 ```json
-// GET /api/v1/users
+// GET /v1/users
 {
   "success": Boolean,
   "error": String,

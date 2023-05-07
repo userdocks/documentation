@@ -24,7 +24,7 @@ These codes can be created via the dashbaord.
 
 #### End Point:
 
-- `/api/v1/users/:userId/promotion-codes/:promotionCode`
+- `/v1/users/:userId/promotion-codes/:promotionCode`
 
 ##### Path Variables:
 
@@ -68,7 +68,7 @@ None
 ```js
 try {
   // call userdocks user management API
-  const response = await fetch('https://api.userdocks.com/api/v1/users/:userId/promotion-codes/:promotionCode', {
+  const response = await fetch('https://api.userdocks.com/v1/users/:userId/promotion-codes/:promotionCode', {
     method: 'PUT',
     headers: {
       // 'Authorization': String, // when accessed from the client e.g. `Bearer ${accessToken}`
@@ -94,7 +94,7 @@ Can have the following HTTP Status Codes:
 - `200` - OK
 
 ```json
-// PUT /api/v1/users/:userId/promotion-codes/:promotionCode
+// PUT /v1/users/:userId/promotion-codes/:promotionCode
 {
   "success": Boolean,
   "message": String,
@@ -113,7 +113,7 @@ Can have the following HTTP Status Codes:
 - `500` - Internal Server Error
 
 ```json
-// PUT /api/v1/users/:userId/promotion-codes/:promotionCode
+// PUT /v1/users/:userId/promotion-codes/:promotionCode
 {
   "success": Boolean,
   "error": String,

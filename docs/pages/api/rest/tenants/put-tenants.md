@@ -20,7 +20,7 @@ This route will update a tenant of the app.
 
 #### End Point:
 
-- `/api/v1/tenants/:tenantId`
+- `/v1/tenants/:tenantId`
 
 ##### Path Variables:
 
@@ -99,7 +99,7 @@ A JSON object.
 ```js
 try {
   // call userdocks user management API
-  const response = await fetch('https://api.userdocks.com/api/v1/tenants/:tenantId', {
+  const response = await fetch('https://api.userdocks.com/v1/tenants/:tenantId', {
     method: 'PUT',
     headers: {
       // 'Authorization': String, // when accessed from the client e.g. `Bearer ${accessToken}`
@@ -161,7 +161,7 @@ Can have the following HTTP Status Codes:
 - `200` - OK
 
 ```json
-// PUT /api/v1/tenants/:tenantId
+// PUT /v1/tenants/:tenantId
 {
   "success": Boolean,
   "message": String,
@@ -180,7 +180,7 @@ Can have the following HTTP Status Codes:
 - `500` - Internal Server Error
 
 ```json
-// PUT /api/v1/tenants/:tenantId
+// PUT /v1/tenants/:tenantId
 {
   "success": Boolean,
   "error": String,

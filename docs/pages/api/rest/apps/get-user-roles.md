@@ -20,7 +20,7 @@ This route will return all user roles of an app.
 
 #### End Point:
 
-- `/api/v1/apps/:appId/user-roles`
+- `/v1/apps/:appId/user-roles`
 
 ##### Path Variables:
 
@@ -57,7 +57,7 @@ None
 ```js
 try {
   // call userdocks user management API
-  const response = await fetch('https://api.userdocks.com/api/v1/apps/:appId/user-roles', {
+  const response = await fetch('https://api.userdocks.com/v1/apps/:appId/user-roles', {
     method: 'GET',
     headers: {
       // an access token can also be used
@@ -84,7 +84,7 @@ Can have the following HTTP Status Codes:
 - `200` - OK
 
 ```json
-// GET /api/v1/apps/:appId/user-roles
+// GET /v1/apps/:appId/user-roles
 {
   "success": Boolean,
   "message": String,
@@ -112,7 +112,7 @@ Can have the following HTTP Status Codes:
 - `500` - Internal Server Error
 
 ```json
-// GET /api/v1/apps/:appId/user-roles
+// GET /v1/apps/:appId/user-roles
 {
   "success": Boolean,
   "error": String,

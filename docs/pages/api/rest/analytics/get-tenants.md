@@ -21,7 +21,7 @@ This route will return all tenants for an application between a two dates.
 
 #### End Point:
 
-- `/api/v1/analytics/tenants`
+- `/v1/analytics/tenants`
 
 ##### Path Variables:
 
@@ -55,7 +55,7 @@ None
 ```js
 try {
   // call userdocks user management API
-  const response = await fetch('https://api.userdocks.com/api/v1/analytics/tenants?from=2022-12-01&to=2022-12-02', {
+  const response = await fetch('https://api.userdocks.com/v1/analytics/tenants?from=2022-12-01&to=2022-12-02', {
     method: 'GET',
     headers: {
       'X-API-KEY': String,
@@ -80,7 +80,7 @@ Can have the following HTTP Status Codes:
 - `200` - OK
 
 ```json
-// GET /api/v1/analytics/tenants
+// GET /v1/analytics/tenants
 {
   "success": Boolean,
   "message": String,
@@ -196,7 +196,7 @@ Can have the following HTTP Status Codes:
 - `500` - Internal Server Error
 
 ```json
-// GET /api/v1/analytics/tenants
+// GET /v1/analytics/tenants
 {
   "success": Boolean,
   "error": String,

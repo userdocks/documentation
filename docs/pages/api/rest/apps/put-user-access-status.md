@@ -20,7 +20,7 @@ This route will change the access status on a account.
 
 #### End Point:
 
-- `/api/v1/apps/:appId/users/:userId/access-status/:accessStatus`
+- `/v1/apps/:appId/users/:userId/access-status/:accessStatus`
 
 ##### Path Variables:
 
@@ -59,7 +59,7 @@ None
 ```js
 try {
   // call userdocks user management API
-  const response = await fetch('https://api.userdocks.com/api/v1/apps/:appId/users/:userId/access-status/:accessStatus', {
+  const response = await fetch('https://api.userdocks.com/v1/apps/:appId/users/:userId/access-status/:accessStatus', {
     method: 'PUT',
     headers: {
       'X-API-KEY': String,
@@ -86,7 +86,7 @@ Can have the following HTTP Status Codes:
 - `200` - OK
 
 ```json
-// POST /api/v1/apps/:appId/users/:userId/access-status/:accessStatus
+// POST /v1/apps/:appId/users/:userId/access-status/:accessStatus
 {
   "success": Boolean,
   "message": String,
@@ -105,7 +105,7 @@ Can have the following HTTP Status Codes:
 - `500` - Internal Server Error
 
 ```json
-// POST /api/v1/users/:userId/access-status/:accessStatus
+// POST /v1/users/:userId/access-status/:accessStatus
 {
   "success": Boolean,
   "error": String,

@@ -22,7 +22,7 @@ This route will return the public key for an application.
 
 #### End Point:
 
-- `/api/v1/apps/:appId/public-keys`
+- `/v1/apps/:appId/public-keys`
 
 ##### Path Variables:
 
@@ -59,7 +59,7 @@ None
 ```js
 try {
   // call userdocks user management API
-  const response = await fetch('https://api.userdocks.com/api/v1/apps/:appId/public-keys', {
+  const response = await fetch('https://api.userdocks.com/v1/apps/:appId/public-keys', {
     method: 'GET',
     headers: {
       'X-API-KEY': String,
@@ -84,7 +84,7 @@ Can have the following HTTP Status Codes:
 - `200` - OK
 
 ```json
-// GET /api/v1/apps/:appId/public-keys
+// GET /v1/apps/:appId/public-keys
 {
   "success": Boolean,
   "message": String,
@@ -106,7 +106,7 @@ Can have the following HTTP Status Codes:
 - `500` - Internal Server Error
 
 ```json
-// GET /api/v1/apps/:appId/public-keys
+// GET /v1/apps/:appId/public-keys
 {
   "success": Boolean,
   "error": String,

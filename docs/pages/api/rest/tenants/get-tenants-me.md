@@ -20,7 +20,7 @@ This route will return the tenant that is connected with the bearer token.
 
 #### End Point:
 
-- `/api/v1/tenants/me`
+- `/v1/tenants/me`
 
 ##### Path Variables:
 
@@ -51,7 +51,7 @@ None
 ```js
 try {
   // call userdocks user management API
-  const response = await fetch('https://api.userdocks.com/api/v1/tenants/me', {
+  const response = await fetch('https://api.userdocks.com/v1/tenants/me', {
     method: 'GET',
     headers: {
       Authorization: `${token.type} ${token.accessToken}`,
@@ -73,7 +73,7 @@ Can have the following HTTP Status Codes:
 - `200` - OK
 
 ```json
-// GET /api/v1/tenants/me
+// GET /v1/tenants/me
 {
   "success": Boolean,
   "message": String,
@@ -193,7 +193,7 @@ Can have the following HTTP Status Codes:
 - `500` - Internal Server Error
 
 ```json
-// GET /api/v1/tenants/me
+// GET /v1/tenants/me
 {
   "success": Boolean,
   "error": String,

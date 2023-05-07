@@ -22,7 +22,7 @@ This endpoint will create a new invoice for a tenant, charging the stripe defaul
 
 #### End Point:
 
-- `/api/v1/tenants/:tenantId/stripe-invoices`
+- `/v1/tenants/:tenantId/stripe-invoices`
 
 ##### Path Variables:
 
@@ -80,7 +80,7 @@ A JSON object.
 ```js
 try {
   // call userdocks user management API
-  const response = await fetch('https://api.userdocks.com/api/v1/tenants/:tenantId/stripe-invoices', {
+  const response = await fetch('https://api.userdocks.com/v1/tenants/:tenantId/stripe-invoices', {
     method: 'POST',
     headers: {
       // 'Authorization': String, // when accessed from the client e.g. `Bearer ${accessToken}`
@@ -116,7 +116,7 @@ Can have the following HTTP Status Codes:
 - `201` - Created
 
 ```json
-// POST /api/v1/tenants/:tenantId/stripe-invoices
+// POST /v1/tenants/:tenantId/stripe-invoices
 {
   "success": Boolean,
   "message": String,
@@ -138,7 +138,7 @@ Can have the following HTTP Status Codes:
 - `500` - Internal Server Error
 
 ```json
-// POST /api/v1/tenants/:tenantId/stripe-invoices
+// POST /v1/tenants/:tenantId/stripe-invoices
 {
   "success": Boolean,
   "error": String,
